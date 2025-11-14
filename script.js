@@ -544,6 +544,7 @@ function processData() {
 
             worksheet.getCell('A7').value = 'Periode :';
             worksheet.getCell('A7').font = { bold: true };
+            worksheet.getCell('B7').value = currentAuditInfo.schedule || '';  // <-- ini kuncinya
 
             // === 5. Auditor & Reviewer
             worksheet.getCell('U7').value = 'Dibuat oleh :';
@@ -798,14 +799,7 @@ function processData() {
                 const r = startKodeRow + i;
                 worksheet.getCell(`B${r}`).value = kodeList[i];
                 worksheet.getCell(`C${r}`).value = penjelasanList[i];
-                ['B', 'C'].forEach(col => {
-                    worksheet.getCell(`${col}${r}`).border = {
-                        top: { style: 'thin' },
-                        left: { style: 'thin' },
-                        bottom: { style: 'thin' },
-                        right: { style: 'thin' }
-                    };
-                });
+                // Border dihapus — tidak ada penugasan `.border`
             }
 
             // === 10. Simpulan (sekarang merge sampai AE)
@@ -864,3 +858,4 @@ function showConfirmSamplingModal() {
         processData(); // Jalankan proses sampling
     };
 }
+
