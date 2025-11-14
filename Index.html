@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monetary Sampling Unit (MUS) - Alat Audit Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-12 col-xl-10">
+                <!-- Header -->
+                <div class="header-section">
+                    <h1><i class="fas fa-calculator me-3"></i>Monetary Sampling Unit (MUS)</h1>
+                    <p>Alat audit profesional untuk sampling unit moneter dengan algoritma seleksi cerdas</p>
+                </div>
+                <!-- Instructions Card -->
+                <div class="card instruction-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle me-2"></i>Petunjuk Penggunaan
+                    </div>
+                    <div class="card-body">
+                        <div class="instruction-item">
+                            <strong>Salin data Excel Anda</strong> yang berisi kolom: Tanggal, Voucher, Keterangan, dan Nominal
+                        </div>
+                        <div class="instruction-item">
+                            <strong>Tempel data yang disalin</strong> ke masing-masing kolom textarea di bawah (pisahkan per kolom)
+                        </div>
+                        <div class="instruction-item">
+                            Format tanggal yang didukung: dd/mm/yyyy, 18 Des 2024, 18 Dec 24, yyyy-mm-dd
+                        </div>
+                        <div class="instruction-item">
+                            Format nominal yang didukung: 1.000.000,00 atau 1,000,000.00 akan dikonversi otomatis
+                        </div>
+                        <div class="instruction-item">
+                            Pastikan <strong>semua kolom memiliki jumlah baris yang sama</strong>
+                        </div>
+                        <div class="instruction-item">
+                            Gunakan tombol <strong>"Isi Data Dummy"</strong> untuk mengisi contoh data 50 baris
+                        </div>
+                        <div class="instruction-item">
+                            Pilih metode sampling dan klik <strong>"Generate Sampel"</strong>
+                        </div>
+                        <div class="instruction-item">
+                            Setelah hasil muncul, klik <strong>"Export ke Excel"</strong> untuk mengunduh file Excel dengan format lengkap
+                        </div>
+                    </div>
+                </div>
+                <!-- Audit Information Form -->
+                <div class="card primary-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-file-alt me-2"></i>Informasi Audit
+                    </div>
+                    <div class="card-body">
+                        <div class="audit-inputs-row">
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Nama Klien <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="namaKlien" placeholder="Masukkan nama klien">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Nama Header</label>
+                                <input type="text" class="form-control" id="namaHeader" placeholder="Masukkan nama header">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Nama Akun</label>
+                                <input type="text" class="form-control" id="namaAkun" placeholder="Masukkan nama akun">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Dibuat Oleh (Auditor) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="dibuatOleh" placeholder="Nama auditor">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Tanggal Dibuat</label>
+                                <input type="date" class="form-control" id="tanggalDibuat">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Direview Oleh</label>
+                                <input type="text" class="form-control" id="direviewOleh" placeholder="Nama reviewer">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Tanggal Direview</label>
+                                <input type="date" class="form-control" id="tanggalDireview">
+                            </div>
+                            <div class="audit-input-group">
+                                <label class="form-label fw-medium">Schedule</label>
+                                <input type="text" class="form-control" id="schedule" placeholder="Masukkan schedule">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Data Input Section -->
+                <div class="card primary-card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-paste me-2"></i>Input Data Transaksi (Per Kolom)
+                    </div>
+                    <div class="card-body">
+                        <div class="textarea-section">
+                            <div class="textarea-group">
+                                <label class="textarea-label">Tanggal</label>
+                                <textarea class="form-control" id="tanggalInput" placeholder="Contoh:
+15/01/2025
+18 Des 2024
+2025-01-17"></textarea>
+                                <button class="btn btn-outline-secondary btn-sm dummy-data-btn" onclick="fillDummyData()">
+                                    <i class="fas fa-database me-1"></i>Isi Data Dummy (50 baris)
+                                </button>
+                            </div>
+                            <div class="textarea-group">
+                                <label class="textarea-label">Voucher</label>
+                                <textarea class="form-control" id="voucherInput" placeholder="Contoh:
+VOU-001
+VOU-002
+VOU-003"></textarea>
+                            </div>
+                            <div class="textarea-group">
+                                <label class="textarea-label">Keterangan</label>
+                                <textarea class="form-control" id="keteranganInput" placeholder="Contoh:
+Pembelian barang
+Jasa konsultasi
+Transportasi"></textarea>
+                            </div>
+                            <div class="textarea-group">
+                                <label class="textarea-label">Nominal</label>
+                                <textarea class="form-control" id="nominalInput" placeholder="Contoh:
+1.000.000,00
+1,500,000.00
+850000"></textarea>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
+                            <select class="form-select sampling-method-select" id="samplingMethod">
+                                <option value="rendah">Rendah (Top 10)</option>
+                                <option value="moderate" selected>Moderate (Top 10 + 10 Acak)</option>
+                                <option value="tinggi">Tinggi (Top 15 + 15 Acak)</option>
+                            </select>
+                            <button class="btn btn-primary" onclick="showConfirmSamplingModal()">
+                                <i class="fas fa-magic me-2"></i>Generate Sampel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Results and Summary Tabs -->
+                <div class="card">
+                    <ul class="nav nav-tabs" id="resultTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab">
+                                <i class="fas fa-list-check me-2"></i>Hasil Sampling
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">
+                                <i class="fas fa-chart-bar me-2"></i>Ringkasan Data
+                            </button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="resultTabContent">
+                        <!-- Results Tab -->
+                        <div class="tab-pane fade show active" id="results" role="tabpanel">
+                            <div class="results-container">
+                                <table class="table table-hover data-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Voucher</th>
+                                            <th>Keterangan</th>
+                                            <th class="text-end">Nominal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="resultsTable">
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4">
+                                                <i class="fas fa-file-alt fa-2x text-muted mb-2"></i>
+                                                <div class="text-muted">Belum ada data sampling yang dihasilkan</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer text-end">
+                                <button class="btn btn-export" onclick="exportToExcel()" id="exportBtn" disabled>
+                                    <i class="fas fa-file-excel me-2"></i>Export ke Excel
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Summary Tab -->
+                        <div class="tab-pane fade" id="summary" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>Statistik Umum</h5>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Total Data Awal:</span>
+                                        <span class="summary-detail-value" id="summaryTotalData">0</span>
+                                    </div>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Total Nominal Awal:</span>
+                                        <span class="summary-detail-value" id="summaryTotalNominal">Rp 0</span>
+                                    </div>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Metode Sampling:</span>
+                                        <span class="summary-detail-value" id="summaryMetodeSampling">-</span>
+                                    </div>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Jumlah Sampel:</span>
+                                        <span class="summary-detail-value" id="summaryJumlahSampel">0</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="mb-3"><i class="fas fa-chart-pie me-2"></i>Analisis Sampling</h5>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Nilai Sampel Terendah:</span>
+                                        <span class="summary-detail-value" id="summaryMinNominal">Rp 0</span>
+                                    </div>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Nilai Sampel Tertinggi:</span>
+                                        <span class="summary-detail-value" id="summaryMaxNominal">Rp 0</span>
+                                    </div>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Rata-rata Sampel:</span>
+                                        <span class="summary-detail-value" id="summaryAvgNominal">Rp 0</span>
+                                    </div>
+                                    <div class="summary-detail-item">
+                                        <span class="summary-detail-label">Cakupan Nilai (%):</span>
+                                        <span class="summary-detail-value" id="summaryCoverage">0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="mb-3"><i class="fas fa-file-alt me-2"></i>Informasi Audit</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="summary-detail-item">
+                                            <span class="summary-detail-label">Nama Klien:</span>
+                                            <span class="summary-detail-value" id="summaryNamaKlien">-</span>
+                                        </div>
+                                        <div class="summary-detail-item">
+                                            <span class="summary-detail-label">Nama Header:</span>
+                                            <span class="summary-detail-value" id="summaryNamaHeader">-</span>
+                                        </div>
+                                        <div class="summary-detail-item">
+                                            <span class="summary-detail-label">Nama Akun:</span>
+                                            <span class="summary-detail-value" id="summaryNamaAkun">-</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="summary-detail-item">
+                                            <span class="summary-detail-label">Dibuat Oleh:</span>
+                                            <span class="summary-detail-value" id="summaryDibuatOleh">-</span>
+                                        </div>
+                                        <div class="summary-detail-item">
+                                            <span class="summary-detail-label">Direview Oleh:</span>
+                                            <span class="summary-detail-value" id="summaryDireviewOleh">-</span>
+                                        </div>
+                                        <div class="summary-detail-item">
+                                            <span class="summary-detail-label">Schedule:</span>
+                                            <span class="summary-detail-value" id="summarySchedule">-</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content error-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Validasi Data Gagal
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-times-circle fa-3x text-danger"></i>
+                    </div>
+                    <div class="error-message" id="errorMessage"></div>
+                    <div class="error-details" id="errorDetails" style="display: none;">
+                        <h6 class="text-danger mb-3"><i class="fas fa-list me-2"></i>Detail Perbedaan Jumlah Baris:</h6>
+                        <div id="errorRows"></div>
+                        <div class="error-summary" id="errorSummary"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        <i class="fas fa-check me-2"></i>Perbaiki Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+    <script src="script.js"></script>
+
+    <!-- Sampling Confirmation Modal -->
+    <div class="modal fade" id="confirmSamplingModal" tabindex="-1" aria-labelledby="confirmSamplingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="confirmSamplingModalLabel">
+                        <i class="fas fa-question-circle me-2"></i>Konfirmasi Sampling
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-magic fa-3x text-primary mb-3"></i>
+                    <p class="mb-0">Apakah Anda yakin ingin memulai proses sampling sekarang?</p>
+                    <p class="text-muted small mt-2">Data akan diproses berdasarkan metode yang dipilih.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Batal
+                    </button>
+                    <button type="button" class="btn btn-primary" id="confirmProceedBtn">
+                        <i class="fas fa-play me-1"></i>Ya, Mulai Sekarang
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
