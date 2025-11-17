@@ -869,8 +869,8 @@ async function exportToExcelBLUD() {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Uji Detil');
 
-        // === 1. Header besar A1:O5 (tanpa logo dulu, bisa ditambahkan nanti via base64)
-        worksheet.mergeCells('A1:O5');
+        // === 1. Header besar A1:E5 (tanpa logo dulu, bisa ditambahkan nanti via base64)
+        worksheet.mergeCells('A1:E5');
         const titleCell = worksheet.getCell('A1');
         titleCell.value = currentNamaHeader || 'Sampling Results';
         titleCell.font = { bold: true, size: 16 };
@@ -882,13 +882,13 @@ async function exportToExcelBLUD() {
             right: { style: 'thin' }
         };
 
-        // === 2. UJI DETIL DOKUMEN (P1:W5)
-        worksheet.mergeCells('P1:W5');
-        worksheet.getCell('P1').value = 'UJI DETIL DOKUMEN (Test Of Detail)';
-        worksheet.getCell('P1').font = { bold: true, size: 14 };
-        worksheet.getCell('P1').alignment = { vertical: 'middle', horizontal: 'center' };
-        worksheet.getCell('P1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE6E6E6' } };
-        worksheet.getCell('P1').border = {
+        // === 2. UJI DETIL DOKUMEN (F1:J5)
+        worksheet.mergeCells('F1:J5');
+        worksheet.getCell('F1').value = 'UJI DETIL DOKUMEN (Test Of Detail)';
+        worksheet.getCell('F1').font = { bold: true, size: 14 };
+        worksheet.getCell('F1').alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getCell('F1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE6E6E6' } };
+        worksheet.getCell('F1').border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
             bottom: { style: 'thin' },
@@ -896,21 +896,21 @@ async function exportToExcelBLUD() {
         };
 
         // === 3. INDEKS (X1:Y1 dan X2:Y5)
-        worksheet.mergeCells('X1:Y1');
-        worksheet.getCell('X1').value = 'INDEKS :';
-        worksheet.getCell('X1').font = { bold: true };
-        worksheet.getCell('X1').alignment = { vertical: 'middle', horizontal: 'center' };
-        worksheet.getCell('X1').border = {
+        worksheet.mergeCells('K1:O1');
+        worksheet.getCell('K1').value = 'INDEKS :';
+        worksheet.getCell('K1').font = { bold: true };
+        worksheet.getCell('K1').alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getCell('K1').border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
             bottom: { style: 'thin' },
             right: { style: 'thin' }
         };
 
-        worksheet.mergeCells('X2:Y5');
-        worksheet.getCell('X2').value = 'XX';
-        worksheet.getCell('X2').alignment = { vertical: 'middle', horizontal: 'center' };
-        worksheet.getCell('X2').border = {
+        worksheet.mergeCells('K2:O5');
+        worksheet.getCell('K2').value = 'XX';
+        worksheet.getCell('K2').alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getCell('K2').border = {
             top: { style: 'thin' },
             left: { style: 'thin' },
             bottom: { style: 'thin' },
@@ -927,27 +927,27 @@ async function exportToExcelBLUD() {
         worksheet.getCell('B8').value = currentAuditInfo.schedule || '';
 
         // === 5. Auditor & Reviewer (U7–Y9)
-        worksheet.getCell('U7').value = 'Dibuat oleh :';
-        worksheet.getCell('U7').font = { bold: true };
-        worksheet.getCell('V7').value = currentAuditInfo.dibuatOleh || '';
+        worksheet.getCell('K7').value = 'Dibuat oleh :';
+        worksheet.getCell('K7').font = { bold: true };
+        worksheet.getCell('L7').value = currentAuditInfo.dibuatOleh || '';
 
-        worksheet.getCell('U8').value = 'Tanggal :';
-        worksheet.getCell('U8').font = { bold: true };
-        worksheet.getCell('V8').value = currentAuditInfo.tanggalDibuat || '';
+        worksheet.getCell('K8').value = 'Tanggal :';
+        worksheet.getCell('K8').font = { bold: true };
+        worksheet.getCell('L8').value = currentAuditInfo.tanggalDibuat || '';
 
-        worksheet.getCell('U9').value = 'Paraf :';
-        worksheet.getCell('U9').font = { bold: true };
+        worksheet.getCell('K9').value = 'Paraf :';
+        worksheet.getCell('K9').font = { bold: true };
 
-        worksheet.getCell('X7').value = 'Direview oleh :';
-        worksheet.getCell('X7').font = { bold: true };
-        worksheet.getCell('Y7').value = currentAuditInfo.direviewOleh || '';
+        worksheet.getCell('N7').value = 'Direview oleh :';
+        worksheet.getCell('N7').font = { bold: true };
+        worksheet.getCell('O7').value = currentAuditInfo.direviewOleh || '';
 
-        worksheet.getCell('X8').value = 'Tanggal :';
-        worksheet.getCell('X8').font = { bold: true };
-        worksheet.getCell('Y8').value = currentAuditInfo.tanggalDireview || '';
+        worksheet.getCell('N8').value = 'Tanggal :';
+        worksheet.getCell('N8').font = { bold: true };
+        worksheet.getCell('O8').value = currentAuditInfo.tanggalDireview || '';
 
-        worksheet.getCell('X9').value = 'Paraf :';
-        worksheet.getCell('X9').font = { bold: true };
+        worksheet.getCell('N9').value = 'Paraf :';
+        worksheet.getCell('N9').font = { bold: true };
 
         // === 6. Header Tabel Baru (baris 11–12)
         const headerConfigs = [
