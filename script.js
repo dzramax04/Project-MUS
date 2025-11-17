@@ -869,7 +869,7 @@ async function exportToExcelBLUD() {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Uji Detil');
 
-        // === 1. Header besar A1:E5 (tanpa logo dulu, bisa ditambahkan nanti via base64)
+        // === 1. Header besar A1:E5
         worksheet.mergeCells('A1:E5');
         const titleCell = worksheet.getCell('A1');
         titleCell.value = currentNamaHeader || 'Sampling Results';
@@ -895,7 +895,7 @@ async function exportToExcelBLUD() {
             right: { style: 'thin' }
         };
 
-        // === 3. INDEKS (X1:Y1 dan X2:Y5)
+        // === 3. INDEKS (K1:O1 dan K2:O5)
         worksheet.mergeCells('K1:O1');
         worksheet.getCell('K1').value = 'INDEKS :';
         worksheet.getCell('K1').font = { bold: true };
@@ -917,7 +917,7 @@ async function exportToExcelBLUD() {
             right: { style: 'thin' }
         };
 
-        // === 4. Info Klien & Periode (A6–B7)
+        // === 4. Info Klien & Periode (A7–B8)
         worksheet.getCell('A7').value = 'Klien :';
         worksheet.getCell('A7').font = { bold: true };
         worksheet.getCell('B7').value = currentAuditInfo.namaKlien || '';
@@ -926,7 +926,7 @@ async function exportToExcelBLUD() {
         worksheet.getCell('A8').font = { bold: true };
         worksheet.getCell('B8').value = currentAuditInfo.schedule || '';
 
-        // === 5. Auditor & Reviewer (U7–Y9)
+        // === 5. Auditor & Reviewer (K7–O9)
         worksheet.getCell('K7').value = 'Dibuat oleh :';
         worksheet.getCell('K7').font = { bold: true };
         worksheet.getCell('L7').value = currentAuditInfo.dibuatOleh || '';
@@ -967,7 +967,7 @@ async function exportToExcelBLUD() {
             { range: 'L11:L12', text: 'Ket', width: 14 },
             { range: 'M11:M12', text: 'Otorisasi dan Pejabat Otorisasi', width: 22 },
             { range: 'N11:N12', text: 'Deskripsi Temuan', width: 28 },
-            { range: 'O11:O12', text: 'File Eksternal', width: 20 } // tambahan sesuai permintaan sebelumnya
+            { range: 'O11:O12', text: 'File Eksternal', width: 20 }
         ];
 
         headerConfigs.forEach(item => {
@@ -977,20 +977,16 @@ async function exportToExcelBLUD() {
                 cell.value = item.text;
                 cell.font = { bold: true };
                 cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-                if (item.width) {
-                    const colLetter = item.range.split(':')[0].replace(/[0-9]/g, '');
-                    worksheet.getColumn(colLetter).width = item.width;
-                }
+                const colLetter = item.range.split(':')[0].replace(/[0-9]/g, '');
+                if (item.width) worksheet.getColumn(colLetter).width = item.width;
             }
             if (item.cell) {
                 const cell = worksheet.getCell(item.cell);
                 cell.value = item.text;
                 cell.font = { bold: true };
                 cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: false };
-                if (item.width) {
-                    const colLetter = item.cell.replace(/[0-9]/g, '');
-                    worksheet.getColumn(colLetter).width = item.width;
-                }
+                const colLetter = item.cell.replace(/[0-9]/g, '');
+                if (item.width) worksheet.getColumn(colLetter).width = item.width;
             }
         });
 
@@ -1015,49 +1011,29 @@ async function exportToExcelBLUD() {
         currentSampledData.forEach((item, idx) => {
             const row = startRow + idx;
 
-            // A: No
             worksheet.getCell(`A${row}`).value = idx + 1;
-
-            // B: Tgl → dd/mm/yyyy
             worksheet.getCell(`B${row}`).value = new Date(item.tanggal);
             worksheet.getCell(`B${row}`).numFmt = 'dd/mm/yyyy';
-
-            // C: Nomor Voucher
             worksheet.getCell(`C${row}`).value = item.voucher;
-
-            // D: Nama Transaksi
             worksheet.getCell(`D${row}`).value = item.keterangan;
-
-            // E & F: Jurnal (D dan K) — bisa diisi nanti, default 0
             worksheet.getCell(`E${row}`).value = 0;
             worksheet.getCell(`F${row}`).value = 0;
             worksheet.getCell(`E${row}`).numFmt = '#,##0';
             worksheet.getCell(`F${row}`).numFmt = '#,##0';
-
-            // G: Jumlah Menurut GL
             worksheet.getCell(`G${row}`).value = item.nominal;
             worksheet.getCell(`G${row}`).numFmt = '#,##0';
-
-            // H–J: Bukti Bayar (No, Tgl, Nominal)
             worksheet.getCell(`H${row}`).value = '';
             worksheet.getCell(`I${row}`).value = '';
             worksheet.getCell(`I${row}`).numFmt = 'dd/mm/yyyy';
             worksheet.getCell(`J${row}`).value = 0;
             worksheet.getCell(`J${row}`).numFmt = '#,##0';
-
-            // K: Selisih = GL - Nominal Bukti → G - J
             worksheet.getCell(`K${row}`).value = { formula: `G${row}-J${row}`, result: item.nominal };
             worksheet.getCell(`K${row}`).numFmt = '#,##0';
-
-            // L–N: Ket, Otorisasi, Deskripsi Temuan
             worksheet.getCell(`L${row}`).value = '';
             worksheet.getCell(`M${row}`).value = '';
             worksheet.getCell(`N${row}`).value = '';
-
-            // O: File Eksternal
             worksheet.getCell(`O${row}`).value = '';
 
-            // Border semua kolom A–O
             const cols = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
             cols.forEach(col => {
                 const cell = worksheet.getCell(`${col}${row}`);
@@ -1067,7 +1043,6 @@ async function exportToExcelBLUD() {
                     bottom: { style: 'thin' },
                     right: { style: 'thin' }
                 };
-                // Alignment: semua center kecuali D, N, O
                 if (!['D', 'N', 'O'].includes(col)) {
                     cell.alignment = { vertical: 'middle', horizontal: 'center' };
                 }
@@ -1076,13 +1051,21 @@ async function exportToExcelBLUD() {
 
         const lastDataRow = startRow + currentSampledData.length - 1;
 
-        // === 8. Dropdown di kolom "Ket" (L) → opsinya "Ts;Im;Sp"
+        // === 8. Buat sheet Lists untuk dropdown "Ket"
+        const listSheet = workbook.addWorksheet('Lists');
+        listSheet.state = 'hidden';
+        listSheet.getCell('A1').value = 'Ts';
+        listSheet.getCell('A2').value = 'Im';
+        listSheet.getCell('A3').value = 'Sp';
+        listSheet.getColumn('A').width = 12;
+
+        // === Dropdown di kolom "Ket" (L) → Ts, Im, Sp sebagai 3 opsi terpisah
         if (currentSampledData.length > 0) {
             for (let r = startRow; r <= lastDataRow; r++) {
                 worksheet.getCell(`L${r}`).dataValidation = {
                     type: 'list',
                     allowBlank: true,
-                    formulae: ['"Ts;Im;Sp"'],
+                    formulae: ['Lists!$A$1:$A$3'],
                     showErrorMessage: true,
                     errorTitle: 'Input Tidak Valid',
                     error: 'Silakan pilih dari daftar: Ts, Im, atau Sp.'
@@ -1091,7 +1074,7 @@ async function exportToExcelBLUD() {
             }
         }
 
-        // === 9. Keterangan & Kode (opsional, tetap pertahankan jika perlu)
+        // === 9. Keterangan & Kode
         const keteranganRow = lastDataRow + 3;
         worksheet.getCell(`A${keteranganRow}`).value = 'Keterangan :';
         worksheet.getCell(`A${keteranganRow}`).font = { underline: true, bold: true };
