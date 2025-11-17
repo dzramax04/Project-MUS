@@ -479,7 +479,7 @@ function processData() {
 }
 
     // ExcelJS Export function with all requested specifications
-    async function exportToExcel() {
+    async function exportToExcelJasa() {
         if (currentSampledData.length === 0) {
             alert('Tidak ada data sampling untuk diekspor!');
             return;
@@ -859,3 +859,256 @@ function showConfirmSamplingModal() {
     };
 }
 
+async function exportToExcelBLUD() {
+    if (currentSampledData.length === 0) {
+        alert('Tidak ada data sampling untuk diekspor!');
+        return;
+    }
+
+    try {
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Uji Detil');
+
+        // === 1. Header besar A1:O5 (judul utama)
+        worksheet.mergeCells('A1:AE5');
+        const titleCell = worksheet.getCell('A1');
+        titleCell.value = currentNamaHeader || 'Sampling Results';
+        titleCell.font = { bold: true, size: 16 };
+        titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+        titleCell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+
+        // === 2. Info Klien & Periode (A6–B7)
+        worksheet.getCell('A6').value = 'Klien :';
+        worksheet.getCell('A6').font = { bold: true };
+        worksheet.getCell('B6').value = currentAuditInfo.namaKlien || '';
+
+        worksheet.getCell('A7').value = 'Periode :';
+        worksheet.getCell('A7').font = { bold: true };
+        worksheet.getCell('B7').value = currentAuditInfo.schedule || '';
+
+        // === 3. Auditor & Reviewer (U7–Y9)
+        worksheet.getCell('U7').value = 'Dibuat oleh :';
+        worksheet.getCell('U7').font = { bold: true };
+        worksheet.getCell('V7').value = currentAuditInfo.dibuatOleh || '';
+
+        worksheet.getCell('U8').value = 'Tanggal :';
+        worksheet.getCell('U8').font = { bold: true };
+        worksheet.getCell('V8').value = currentAuditInfo.tanggalDibuat || '';
+
+        worksheet.getCell('U9').value = 'Paraf :';
+        worksheet.getCell('U9').font = { bold: true };
+
+        worksheet.getCell('X7').value = 'Direview oleh :';
+        worksheet.getCell('X7').font = { bold: true };
+        worksheet.getCell('Y7').value = currentAuditInfo.direviewOleh || '';
+
+        worksheet.getCell('X8').value = 'Tanggal :';
+        worksheet.getCell('X8').font = { bold: true };
+        worksheet.getCell('Y8').value = currentAuditInfo.tanggalDireview || '';
+
+        worksheet.getCell('X9').value = 'Paraf :';
+        worksheet.getCell('X9').font = { bold: true };
+
+        // === 4. Header Tabel Baru (baris 11–12)
+        const headerConfigs = [
+            { range: 'A11:A12', text: 'No', width: 8 },
+            { range: 'B11:B12', text: 'Tgl', width: 12 },
+            { range: 'C11:C12', text: 'Nomor Voucher', width: 18 },
+            { range: 'D11:D12', text: 'Nama Transaksi', width: 25 },
+            { range: 'E11:F11', text: 'Jurnal' },
+            { cell: 'E12', text: 'D', width: 10 },
+            { cell: 'F12', text: 'K', width: 10 },
+            { range: 'G11:G12', text: 'Jumlah Menurut GL', width: 18 },
+            { range: 'H11:J11', text: 'Bukti Bayar (BB)' },
+            { cell: 'H12', text: 'No Bukti', width: 16 },
+            { cell: 'I12', text: 'Tgl Bukti', width: 12 },
+            { cell: 'J12', text: 'Nominal Bukti', width: 16 },
+            { range: 'K11:K12', text: 'Selisih', width: 14 },
+            { range: 'L11:L12', text: 'Ket', width: 14 },
+            { range: 'M11:M12', text: 'Otorisasi dan Pejabat Otorisasi', width: 22 },
+            { range: 'N11:N12', text: 'Deskripsi Temuan', width: 28 },
+            { range: 'O11:O12', text: 'File Eksternal', width: 20 } // tambahan sesuai permintaan sebelumnya
+        ];
+
+        headerConfigs.forEach(item => {
+            if (item.range) {
+                worksheet.mergeCells(item.range);
+                const cell = worksheet.getCell(item.range.split(':')[0]);
+                cell.value = item.text;
+                cell.font = { bold: true };
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                if (item.width) {
+                    const colLetter = item.range.split(':')[0].replace(/[0-9]/g, '');
+                    worksheet.getColumn(colLetter).width = item.width;
+                }
+            }
+            if (item.cell) {
+                const cell = worksheet.getCell(item.cell);
+                cell.value = item.text;
+                cell.font = { bold: true };
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: false };
+                if (item.width) {
+                    const colLetter = item.cell.replace(/[0-9]/g, '');
+                    worksheet.getColumn(colLetter).width = item.width;
+                }
+            }
+        });
+
+        // === Border dan background header (baris 11–12)
+        [11, 12].forEach(rowNum => {
+            const row = worksheet.getRow(rowNum);
+            row.eachCell({ includeEmpty: true }, cell => {
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+                if (!cell.isMerged) {
+                    cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD9D9D9' } };
+                }
+            });
+        });
+
+        // === 5. Isi Data Sampling (mulai baris 13)
+        const startRow = 13;
+        currentSampledData.forEach((item, idx) => {
+            const row = startRow + idx;
+
+            // A: No
+            worksheet.getCell(`A${row}`).value = idx + 1;
+
+            // B: Tgl → dd/mm/yyyy
+            worksheet.getCell(`B${row}`).value = new Date(item.tanggal);
+            worksheet.getCell(`B${row}`).numFmt = 'dd/mm/yyyy';
+
+            // C: Nomor Voucher
+            worksheet.getCell(`C${row}`).value = item.voucher;
+
+            // D: Nama Transaksi
+            worksheet.getCell(`D${row}`).value = item.keterangan;
+
+            // E & F: Jurnal (D dan K) — bisa diisi nanti, default 0
+            worksheet.getCell(`E${row}`).value = 0;
+            worksheet.getCell(`F${row}`).value = 0;
+            worksheet.getCell(`E${row}`).numFmt = '#,##0';
+            worksheet.getCell(`F${row}`).numFmt = '#,##0';
+
+            // G: Jumlah Menurut GL
+            worksheet.getCell(`G${row}`).value = item.nominal;
+            worksheet.getCell(`G${row}`).numFmt = '#,##0';
+
+            // H–J: Bukti Bayar (No, Tgl, Nominal)
+            worksheet.getCell(`H${row}`).value = '';
+            worksheet.getCell(`I${row}`).value = '';
+            worksheet.getCell(`I${row}`).numFmt = 'dd/mm/yyyy';
+            worksheet.getCell(`J${row}`).value = 0;
+            worksheet.getCell(`J${row}`).numFmt = '#,##0';
+
+            // K: Selisih = GL - Nominal Bukti → G - J
+            worksheet.getCell(`K${row}`).value = { formula: `G${row}-J${row}`, result: item.nominal };
+            worksheet.getCell(`K${row}`).numFmt = '#,##0';
+
+            // L–N: Ket, Otorisasi, Deskripsi Temuan
+            worksheet.getCell(`L${row}`).value = '';
+            worksheet.getCell(`M${row}`).value = '';
+            worksheet.getCell(`N${row}`).value = '';
+
+            // O: File Eksternal
+            worksheet.getCell(`O${row}`).value = '';
+
+            // Border semua kolom A–O
+            const cols = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'];
+            cols.forEach(col => {
+                const cell = worksheet.getCell(`${col}${row}`);
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+                // Alignment: semua center kecuali D, N, O
+                if (!['D', 'N', 'O'].includes(col)) {
+                    cell.alignment = { vertical: 'middle', horizontal: 'center' };
+                }
+            });
+        });
+
+        const lastDataRow = startRow + currentSampledData.length - 1;
+
+        // === 6. Dropdown di kolom "Ket" (L) → opsinya "PBC" saja sesuai histori Anda
+        if (currentSampledData.length > 0) {
+            for (let r = startRow; r <= lastDataRow; r++) {
+                worksheet.getCell(`L${r}`).dataValidation = {
+                    type: 'list',
+                    allowBlank: true,
+                    formulae: ['"PBC"'],
+                    showErrorMessage: true,
+                    errorTitle: 'Input Tidak Valid',
+                    error: 'Silakan pilih dari daftar: PBC.'
+                };
+                worksheet.getCell(`L${r}`).alignment = { vertical: 'middle', horizontal: 'center' };
+            }
+        }
+
+        // === 7. Keterangan & Kode (opsional, tetap pertahankan jika perlu)
+        const keteranganRow = lastDataRow + 3;
+        worksheet.getCell(`A${keteranganRow}`).value = 'Keterangan :';
+        worksheet.getCell(`A${keteranganRow}`).font = { underline: true, bold: true };
+
+        const kodeList = ['PBC', 'AFR', 'V', '‹', 'G/L', 'N/A', 'Sp', 'Im', 'Ts'];
+        const penjelasanList = [
+            'Disiapkan Oleh Klien',
+            'Sesuai Dengan Laporan Keuangan Perusahaan',
+            'Voucher',
+            'Penjumlahan Kebawah dan Kesamping Adalah Benar',
+            'Sesuai Dengan Buku Besar Perusahaan',
+            'Tidak Terdapat (Non Aplikable)',
+            'Error Material / Beda Material',
+            'Beda Tidak Material',
+            'Tidak Selisih'
+        ];
+
+        const startKodeRow = lastDataRow + 4;
+        for (let i = 0; i < kodeList.length; i++) {
+            const r = startKodeRow + i;
+            worksheet.getCell(`B${r}`).value = kodeList[i];
+            worksheet.getCell(`C${r}`).value = penjelasanList[i];
+        }
+
+        // === 8. Simpulan
+        const simpulanRow = startKodeRow + kodeList.length + 2;
+        worksheet.getCell(`A${simpulanRow}`).value = 'Simpulan :';
+        worksheet.getCell(`A${simpulanRow}`).font = { bold: true };
+        worksheet.mergeCells(`B${simpulanRow}:O${simpulanRow + 2}`);
+        const simpulanCell = worksheet.getCell(`B${simpulanRow}`);
+        simpulanCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5E6D3' } };
+        simpulanCell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+
+        // === 9. Simpan file
+        const buffer = await workbook.xlsx.writeBuffer();
+        const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Uji_Detil_Sampling.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Gagal ekspor: ' + (error.message || 'Error tidak dikenal'));
+    }
+}
