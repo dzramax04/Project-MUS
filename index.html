@@ -6,327 +6,409 @@
     <title>Monetary Sampling Unit (MUS) - Alat Audit Profesional</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e3a8a;
+            --secondary: #0f766e;
+            --accent: #d97706;
+            --light: #f8fafc;
+            --dark: #0f172a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-section {
+            padding: 120px 0;
+            background: linear-gradient(to bottom right, #dbeafe 0%, #bfdbfe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: var(--primary-dark);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 30px;
+            color: #334155;
+        }
+        
+        .services-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            color: #475569;
+            font-size: 1.1rem;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            height: 100%;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: #cbd5e1;
+        }
+        
+        .service-header {
+            padding: 25px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .service-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .service-icon {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .service-body {
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .service-desc {
+            color: #475569;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            min-height: 80px;
+        }
+        
+        .btn-service {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+            width: 100%;
+        }
+        
+        .btn-service:hover {
+            background: transparent;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        .btn-get-started {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-get-started:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-section {
+                padding: 80px 0;
+                min-height: 70vh;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div class="col-12 col-xl-10">
-                <!-- Header -->
-                <div class="header-section">
-                    <h1><i class="fas fa-calculator me-3"></i>Monetary Sampling Unit (MUS)</h1>
-                    <p>Alat audit profesional untuk sampling unit moneter dengan algoritma seleksi cerdas</p>
-                </div>
-                <!-- Instructions Card -->
-                <div class="card instruction-card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-info-circle me-2"></i>Petunjuk Penggunaan
-                    </div>
-                    <div class="card-body">
-                        <div class="instruction-item">
-                            <strong>Salin data Excel Anda</strong> yang berisi kolom: Tanggal, Voucher, Keterangan, dan Nominal
-                        </div>
-                        <div class="instruction-item">
-                            <strong>Tempel data yang disalin</strong> ke masing-masing kolom textarea di bawah (pisahkan per kolom)
-                        </div>
-                        <div class="instruction-item">
-                            Format tanggal yang didukung: dd/mm/yyyy, 18 Des 2024, 18 Dec 24, yyyy-mm-dd
-                        </div>
-                        <div class="instruction-item">
-                            Format nominal yang didukung: 1.000.000,00 atau 1,000,000.00 akan dikonversi otomatis
-                        </div>
-                        <div class="instruction-item">
-                            Pastikan <strong>semua kolom memiliki jumlah baris yang sama</strong>
-                        </div>
-                        <div class="instruction-item">
-                            Gunakan tombol <strong>"Isi Data Dummy"</strong> untuk mengisi contoh data 50 baris
-                        </div>
-                        <div class="instruction-item">
-                            Pilih metode sampling dan klik <strong>"Generate Sampel"</strong>
-                        </div>
-                        <div class="instruction-item">
-                            Setelah hasil muncul, klik <strong>"Export ke Excel"</strong> untuk mengunduh file Excel dengan format lengkap
-                        </div>
-                    </div>
-                </div>
-                <!-- Audit Information Form -->
-                <div class="card primary-card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-file-alt me-2"></i>Informasi Audit
-                    </div>
-                    <div class="card-body">
-                        <div class="audit-inputs-row">
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Nama Klien <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="namaKlien" placeholder="Masukkan nama klien">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-calculator me-2 text-primary"></i>
+                <span class="logo">Monetary Sampling Unit</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Beranda</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#layanan">Layanan</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Centered Content -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">Solusi Sampling Unit Moneter untuk Profesional Audit</h1>
+            <p class="hero-subtitle">
+                Alat canggih untuk melakukan sampling berbasis nilai (Monetary Unit Sampling) dengan presisi tinggi, 
+                sesuai standar audit profesional terkini.
+            </p>
+            <a href="#layanan" class="btn btn-get-started">
+                <i class="fas fa-arrow-down me-2"></i>Pilih Bidang Layanan
+            </a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section" id="layanan">
+        <div class="container">
+            <h2 class="section-title">Pilih Bidang Layanan</h2>
+            <p class="section-subtitle text-center">
+                Pilih bidang layanan yang sesuai dengan kebutuhan audit Anda untuk mengakses template dan metode sampling yang relevan
+            </p>
+            
+            <div class="row g-4">
+                <!-- Badan Layanan Umum Daerah (BLUD) -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-header">
+                            <div class="service-icon">
+                                <i class="fas fa-building"></i>
                             </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Nama Header</label>
-                                <input type="text" class="form-control" id="namaHeader" placeholder="Masukkan nama header">
-                            </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Nama Akun</label>
-                                <input type="text" class="form-control" id="namaAkun" placeholder="Masukkan nama akun">
-                            </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Dibuat Oleh (Auditor) <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="dibuatOleh" placeholder="Nama auditor">
-                            </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Tanggal Dibuat</label>
-                                <input type="date" class="form-control" id="tanggalDibuat">
-                            </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Direview Oleh</label>
-                                <input type="text" class="form-control" id="direviewOleh" placeholder="Nama reviewer">
-                            </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Tanggal Direview</label>
-                                <input type="date" class="form-control" id="tanggalDireview">
-                            </div>
-                            <div class="audit-input-group">
-                                <label class="form-label fw-medium">Periode</label>
-                                <input type="text" class="form-control" id="schedule" placeholder="Masukkan schedule">
-                            </div>
+                            <h4 class="service-title">Badan Layanan Umum Daerah (BLUD)</h4>
+                        </div>
+                        <div class="service-body">
+                            <p class="service-desc">
+                                Sampling transaksi BLUD untuk menguji keberadaan dan valuation.
+                            </p>
+                            <a href="index.html" class="btn-service">
+                                Mulai Sampling
+                            </a>
                         </div>
                     </div>
                 </div>
-                <!-- Data Input Section -->
-                <div class="card primary-card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-paste me-2"></i>Input Data Transaksi (Per Kolom)
-                    </div>
-                    <div class="card-body">
-                        <div class="textarea-section">
-                            <div class="textarea-group">
-                                <label class="textarea-label">Tanggal</label>
-                                <textarea class="form-control" id="tanggalInput" placeholder="Contoh:
-15/01/2025
-18 Des 2024
-2025-01-17"></textarea>
-                                <button class="btn btn-outline-secondary btn-sm dummy-data-btn" onclick="fillDummyData()">
-                                    <i class="fas fa-database me-1"></i>Isi Data Dummy (50 baris)
-                                </button>
+                
+                <!-- Jasa -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-header">
+                            <div class="service-icon">
+                                <i class="fas fa-briefcase"></i>
                             </div>
-                            <div class="textarea-group">
-                                <label class="textarea-label">Voucher</label>
-                                <textarea class="form-control" id="voucherInput" placeholder="Contoh:
-VOU-001
-VOU-002
-VOU-003"></textarea>
-                            </div>
-                            <div class="textarea-group">
-                                <label class="textarea-label">Keterangan</label>
-                                <textarea class="form-control" id="keteranganInput" placeholder="Contoh:
-Pembelian barang
-Jasa konsultasi
-Transportasi"></textarea>
-                            </div>
-                            <div class="textarea-group">
-                                <label class="textarea-label">Nominal</label>
-                                <textarea class="form-control" id="nominalInput" placeholder="Contoh:
-1.000.000,00
-1,500,000.00
-850000"></textarea>
-                            </div>
+                            <h4 class="service-title">Jasa</h4>
                         </div>
-                        <div class="d-flex flex-wrap gap-3 align-items-center mt-3">
-                            <select class="form-select sampling-method-select" id="samplingMethod">
-                                <option value="rendah">Rendah (Top 10)</option>
-                                <option value="moderate" selected>Moderate (Top 10 + 10 Acak)</option>
-                                <option value="tinggi">Tinggi (Top 15 + 15 Acak)</option>
-                            </select>
-                            <button class="btn btn-primary" onclick="showConfirmSamplingModal()">
-                                <i class="fas fa-magic me-2"></i>Generate Sampel
-                            </button>
+                        <div class="service-body">
+                            <p class="service-desc">
+                                Sampling transaksi jasa untuk menguji kelengkapan dan akurasi.
+                            </p>
+                            <a href="Jasa.html" class="btn-service">
+                                Mulai Sampling
+                            </a>
                         </div>
                     </div>
                 </div>
-                <!-- Results and Summary Tabs -->
-                <div class="card">
-                    <ul class="nav nav-tabs" id="resultTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab">
-                                <i class="fas fa-list-check me-2"></i>Hasil Sampling
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">
-                                <i class="fas fa-chart-bar me-2"></i>Ringkasan Data
-                            </button>
-                        </li>
+                
+                <!-- Manufaktur -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-header">
+                            <div class="service-icon">
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <h4 class="service-title">Manufaktur</h4>
+                        </div>
+                        <div class="service-body">
+                            <p class="service-desc">
+                                Sampling transaksi manufaktur untuk menguji keberadaan dan valuation.
+                            </p>
+                            <a href="index.html" class="btn-service">
+                                Mulai Sampling
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Badan Layanan Umum (BLU) -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card">
+                        <div class="service-header">
+                            <div class="service-icon">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <h4 class="service-title">Badan Layanan Umum (BLU)</h4>
+                        </div>
+                        <div class="service-body">
+                            <p class="service-desc">
+                                Sampling transaksi BLU untuk menguji keberadaan dan otorisasi.
+                            </p>
+                            <a href="index.html" class="btn-service">
+                                Mulai Sampling
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h4 class="footer-title">Monetary Sampling Unit</h4>
+                    <p class="text-muted">
+                        Alat profesional untuk auditor dalam melakukan Monetary Unit Sampling sesuai standar audit terkini.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">Kontak</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope me-2"></i> info@mus-audit.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +62 21 1234 5678</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Jakarta, Indonesia</li>
                     </ul>
-                    <div class="tab-content" id="resultTabContent">
-                        <!-- Results Tab -->
-                        <div class="tab-pane fade show active" id="results" role="tabpanel">
-                            <div class="results-container">
-                                <table class="table table-hover data-table mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Tanggal</th>
-                                            <th>Voucher</th>
-                                            <th>Keterangan</th>
-                                            <th class="text-end">Nominal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="resultsTable">
-                                        <tr>
-                                            <td colspan="4" class="text-center py-4">
-                                                <i class="fas fa-file-alt fa-2x text-muted mb-2"></i>
-                                                <div class="text-muted">Belum ada data sampling yang dihasilkan</div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="card-footer text-end">
-                                <button class="btn btn-export" onclick="exportToExcel()" id="exportBtn" disabled>
-                                    <i class="fas fa-file-excel me-2"></i>Export ke Excel
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Summary Tab -->
-                        <div class="tab-pane fade" id="summary" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h5 class="mb-3"><i class="fas fa-info-circle me-2"></i>Statistik Umum</h5>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Total Data Awal:</span>
-                                        <span class="summary-detail-value" id="summaryTotalData">0</span>
-                                    </div>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Total Nominal Awal:</span>
-                                        <span class="summary-detail-value" id="summaryTotalNominal">Rp 0</span>
-                                    </div>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Metode Sampling:</span>
-                                        <span class="summary-detail-value" id="summaryMetodeSampling">-</span>
-                                    </div>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Jumlah Sampel:</span>
-                                        <span class="summary-detail-value" id="summaryJumlahSampel">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5 class="mb-3"><i class="fas fa-chart-pie me-2"></i>Analisis Sampling</h5>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Nilai Sampel Terendah:</span>
-                                        <span class="summary-detail-value" id="summaryMinNominal">Rp 0</span>
-                                    </div>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Nilai Sampel Tertinggi:</span>
-                                        <span class="summary-detail-value" id="summaryMaxNominal">Rp 0</span>
-                                    </div>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Rata-rata Sampel:</span>
-                                        <span class="summary-detail-value" id="summaryAvgNominal">Rp 0</span>
-                                    </div>
-                                    <div class="summary-detail-item">
-                                        <span class="summary-detail-label">Cakupan Nilai (%):</span>
-                                        <span class="summary-detail-value" id="summaryCoverage">0%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-4">
-                                <h5 class="mb-3"><i class="fas fa-file-alt me-2"></i>Informasi Audit</h5>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="summary-detail-item">
-                                            <span class="summary-detail-label">Nama Klien:</span>
-                                            <span class="summary-detail-value" id="summaryNamaKlien">-</span>
-                                        </div>
-                                        <div class="summary-detail-item">
-                                            <span class="summary-detail-label">Nama Header:</span>
-                                            <span class="summary-detail-value" id="summaryNamaHeader">-</span>
-                                        </div>
-                                        <div class="summary-detail-item">
-                                            <span class="summary-detail-label">Nama Akun:</span>
-                                            <span class="summary-detail-value" id="summaryNamaAkun">-</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="summary-detail-item">
-                                            <span class="summary-detail-label">Dibuat Oleh:</span>
-                                            <span class="summary-detail-value" id="summaryDibuatOleh">-</span>
-                                        </div>
-                                        <div class="summary-detail-item">
-                                            <span class="summary-detail-label">Direview Oleh:</span>
-                                            <span class="summary-detail-value" id="summaryDireviewOleh">-</span>
-                                        </div>
-                                        <div class="summary-detail-item">
-                                            <span class="summary-detail-label">Schedule:</span>
-                                            <span class="summary-detail-value" id="summarySchedule">-</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="footer-title">Navigasi</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Beranda</a></li>
+                        <li><a href="#layanan">Bidang Layanan</a></li>
+                        <li><a href="#">Dokumentasi</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- Error Modal -->
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content error-modal">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Validasi Data Gagal
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <i class="fas fa-times-circle fa-3x text-danger"></i>
-                    </div>
-                    <div class="error-message" id="errorMessage"></div>
-                    <div class="error-details" id="errorDetails" style="display: none;">
-                        <h6 class="text-danger mb-3"><i class="fas fa-list me-2"></i>Detail Perbedaan Jumlah Baris:</h6>
-                        <div id="errorRows"></div>
-                        <div class="error-summary" id="errorSummary"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        <i class="fas fa-check me-2"></i>Perbaiki Data
-                    </button>
-                </div>
+            <div class="copyright">
+                &copy; 2025 Monetary Sampling Unit. Semua hak dilindungi.
             </div>
         </div>
-    </div>
+    </footer>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-    <script src="script.js"></script>
-
-    <!-- Sampling Confirmation Modal -->
-    <div class="modal fade" id="confirmSamplingModal" tabindex="-1" aria-labelledby="confirmSamplingModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="confirmSamplingModalLabel">
-                        <i class="fas fa-question-circle me-2"></i>Konfirmasi Sampling
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center py-4">
-                    <i class="fas fa-magic fa-3x text-primary mb-3"></i>
-                    <p class="mb-0">Apakah Anda yakin ingin memulai proses sampling sekarang?</p>
-                    <p class="text-muted small mt-2">Data akan diproses berdasarkan metode yang dipilih.</p>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i>Batal
-                    </button>
-                    <button type="button" class="btn btn-primary" id="confirmProceedBtn">
-                        <i class="fas fa-play me-1"></i>Ya, Mulai Sekarang
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 
