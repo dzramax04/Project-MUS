@@ -869,8 +869,8 @@ async function exportToExcelBLUD() {
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Uji Detil');
 
-        // === 1. Header besar A1:O5 (judul utama)
-        worksheet.mergeCells('A1:AE5');
+        // === 1. Header besar A1:O5 (tanpa logo dulu, bisa ditambahkan nanti via base64)
+        worksheet.mergeCells('A1:O5');
         const titleCell = worksheet.getCell('A1');
         titleCell.value = currentNamaHeader || 'Sampling Results';
         titleCell.font = { bold: true, size: 16 };
@@ -882,7 +882,42 @@ async function exportToExcelBLUD() {
             right: { style: 'thin' }
         };
 
-        // === 2. Info Klien & Periode (A6–B7)
+        // === 2. UJI DETIL DOKUMEN (P1:W5)
+        worksheet.mergeCells('P1:W5');
+        worksheet.getCell('P1').value = 'UJI DETIL DOKUMEN (Test Of Detail)';
+        worksheet.getCell('P1').font = { bold: true, size: 14 };
+        worksheet.getCell('P1').alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getCell('P1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE6E6E6' } };
+        worksheet.getCell('P1').border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+
+        // === 3. INDEKS (X1:Y1 dan X2:Y5)
+        worksheet.mergeCells('X1:Y1');
+        worksheet.getCell('X1').value = 'INDEKS :';
+        worksheet.getCell('X1').font = { bold: true };
+        worksheet.getCell('X1').alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getCell('X1').border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+
+        worksheet.mergeCells('X2:Y5');
+        worksheet.getCell('X2').value = 'XX';
+        worksheet.getCell('X2').alignment = { vertical: 'middle', horizontal: 'center' };
+        worksheet.getCell('X2').border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+        };
+
+        // === 4. Info Klien & Periode (A6–B7)
         worksheet.getCell('A7').value = 'Klien :';
         worksheet.getCell('A7').font = { bold: true };
         worksheet.getCell('B7').value = currentAuditInfo.namaKlien || '';
@@ -891,7 +926,7 @@ async function exportToExcelBLUD() {
         worksheet.getCell('A8').font = { bold: true };
         worksheet.getCell('B8').value = currentAuditInfo.schedule || '';
 
-        // === 3. Auditor & Reviewer (U7–Y9)
+        // === 5. Auditor & Reviewer (U7–Y9)
         worksheet.getCell('U7').value = 'Dibuat oleh :';
         worksheet.getCell('U7').font = { bold: true };
         worksheet.getCell('V7').value = currentAuditInfo.dibuatOleh || '';
@@ -914,7 +949,7 @@ async function exportToExcelBLUD() {
         worksheet.getCell('X9').value = 'Paraf :';
         worksheet.getCell('X9').font = { bold: true };
 
-        // === 4. Header Tabel Baru (baris 11–12)
+        // === 6. Header Tabel Baru (baris 11–12)
         const headerConfigs = [
             { range: 'A11:A12', text: 'No', width: 8 },
             { range: 'B11:B12', text: 'Tgl', width: 12 },
@@ -975,7 +1010,7 @@ async function exportToExcelBLUD() {
             });
         });
 
-        // === 5. Isi Data Sampling (mulai baris 13)
+        // === 7. Isi Data Sampling (mulai baris 13)
         const startRow = 13;
         currentSampledData.forEach((item, idx) => {
             const row = startRow + idx;
@@ -1041,7 +1076,7 @@ async function exportToExcelBLUD() {
 
         const lastDataRow = startRow + currentSampledData.length - 1;
 
-        // === 6. Dropdown di kolom "Ket" (L) → opsinya "PBC" saja sesuai histori Anda
+        // === 8. Dropdown di kolom "Ket" (L) → opsinya "PBC" saja sesuai histori Anda
         if (currentSampledData.length > 0) {
             for (let r = startRow; r <= lastDataRow; r++) {
                 worksheet.getCell(`L${r}`).dataValidation = {
@@ -1056,7 +1091,7 @@ async function exportToExcelBLUD() {
             }
         }
 
-        // === 7. Keterangan & Kode (opsional, tetap pertahankan jika perlu)
+        // === 9. Keterangan & Kode (opsional, tetap pertahankan jika perlu)
         const keteranganRow = lastDataRow + 3;
         worksheet.getCell(`A${keteranganRow}`).value = 'Keterangan :';
         worksheet.getCell(`A${keteranganRow}`).font = { underline: true, bold: true };
@@ -1081,7 +1116,7 @@ async function exportToExcelBLUD() {
             worksheet.getCell(`C${r}`).value = penjelasanList[i];
         }
 
-        // === 8. Simpulan
+        // === 10. Simpulan
         const simpulanRow = startKodeRow + kodeList.length + 2;
         worksheet.getCell(`A${simpulanRow}`).value = 'Simpulan :';
         worksheet.getCell(`A${simpulanRow}`).font = { bold: true };
@@ -1095,7 +1130,7 @@ async function exportToExcelBLUD() {
             right: { style: 'thin' }
         };
 
-        // === 9. Simpan file
+        // === 11. Simpan file
         const buffer = await workbook.xlsx.writeBuffer();
         const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         const url = URL.createObjectURL(blob);
