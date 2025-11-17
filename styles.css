@@ -307,3 +307,88 @@ textarea.form-control {
         gap: 0.25rem;
     }
 }
+
+/* Dark Mode */
+:root {
+    --bg-body: #f8fafc;
+    --bg-card: white;
+    --text-primary: #0c4a6e;
+    --text-secondary: #64748b;
+    --border-color: #e2e8f0;
+    --input-bg: #f8fafc;
+    --table-header-bg: #f1f5f9;
+    --summary-bg: white;
+    --metric-hover-border: #2563eb;
+}
+
+[data-theme="dark"] {
+    --bg-body: #111827;
+    --bg-card: #1f2937;
+    --text-primary: #f0f9ff;
+    --text-secondary: #9ca3af;
+    --border-color: #374151;
+    --input-bg: #111827;
+    --table-header-bg: #374151;
+    --summary-bg: #1f2937;
+    --metric-hover-border: #60a5fa;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+}
+
+.card,
+.tab-content {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.form-control, .form-select, textarea.form-control {
+    background-color: var(--input-bg);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.form-control::placeholder,
+.form-select {
+    color: var(--text-secondary);
+}
+
+.data-table th {
+    background-color: var(--table-header-bg);
+    color: var(--text-primary);
+}
+
+.summary-metric,
+.summary-detail-item {
+    background-color: var(--summary-bg);
+    color: var(--text-primary);
+}
+
+.summary-detail-label {
+    color: var(--text-secondary);
+}
+
+.summary-detail-value {
+    color: #60a5fa; /* Biru terang untuk kontras di dark mode */
+}
+
+.instruction-card .card-header,
+.primary-card .card-header,
+.info-card .card-header,
+.success-card .card-header,
+.error-modal .modal-header,
+.modal-content {
+    color: white;
+}
+
+/* Optional: sesuaikan ikon toggle */
+#darkModeToggle {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+#darkModeToggle:hover {
+    background-color: var(--border-color);
+}
