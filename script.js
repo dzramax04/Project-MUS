@@ -538,13 +538,13 @@ function processData() {
             };
 
             // === 4. Info Klien & Periode
-            worksheet.getCell('A6').value = 'Klien :';
-            worksheet.getCell('A6').font = { bold: true };
-            worksheet.getCell('B6').value = currentAuditInfo.namaKlien || '';
-
-            worksheet.getCell('A7').value = 'Periode :';
+            worksheet.getCell('A7').value = 'Klien :';
             worksheet.getCell('A7').font = { bold: true };
-            worksheet.getCell('B7').value = currentAuditInfo.schedule || '';  // <-- ini kuncinya
+            worksheet.getCell('B7').value = currentAuditInfo.namaKlien || '';
+
+            worksheet.getCell('A8').value = 'Periode :';
+            worksheet.getCell('A8').font = { bold: true };
+            worksheet.getCell('B8').value = currentAuditInfo.schedule || '';  // <-- ini kuncinya
 
             // === 5. Auditor & Reviewer
             worksheet.getCell('U7').value = 'Dibuat oleh :';
@@ -883,13 +883,13 @@ async function exportToExcelBLUD() {
         };
 
         // === 2. Info Klien & Periode (A6–B7)
-        worksheet.getCell('A6').value = 'Klien :';
-        worksheet.getCell('A6').font = { bold: true };
-        worksheet.getCell('B6').value = currentAuditInfo.namaKlien || '';
-
-        worksheet.getCell('A7').value = 'Periode :';
+        worksheet.getCell('A7').value = 'Klien :';
         worksheet.getCell('A7').font = { bold: true };
-        worksheet.getCell('B7').value = currentAuditInfo.schedule || '';
+        worksheet.getCell('B7').value = currentAuditInfo.namaKlien || '';
+
+        worksheet.getCell('A8').value = 'Periode :';
+        worksheet.getCell('A8').font = { bold: true };
+        worksheet.getCell('B8').value = currentAuditInfo.schedule || '';
 
         // === 3. Auditor & Reviewer (U7–Y9)
         worksheet.getCell('U7').value = 'Dibuat oleh :';
