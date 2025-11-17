@@ -1076,16 +1076,16 @@ async function exportToExcelBLUD() {
 
         const lastDataRow = startRow + currentSampledData.length - 1;
 
-        // === 8. Dropdown di kolom "Ket" (L) → opsinya "PBC" saja sesuai histori Anda
+        // === 8. Dropdown di kolom "Ket" (L) → opsinya "Ts;Im;Sp"
         if (currentSampledData.length > 0) {
             for (let r = startRow; r <= lastDataRow; r++) {
                 worksheet.getCell(`L${r}`).dataValidation = {
                     type: 'list',
                     allowBlank: true,
-                    formulae: ['"PBC"'],
+                    formulae: ['"Ts;Im;Sp"'],
                     showErrorMessage: true,
                     errorTitle: 'Input Tidak Valid',
-                    error: 'Silakan pilih dari daftar: PBC.'
+                    error: 'Silakan pilih dari daftar: Ts, Im, atau Sp.'
                 };
                 worksheet.getCell(`L${r}`).alignment = { vertical: 'middle', horizontal: 'center' };
             }
