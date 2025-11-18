@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coming Soon – Monetary Sampling Unit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0f766e;
+            --light-bg: #f8fafc;
+            --text-dark: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .coming-soon-container {
+            max-width: 600px;
+            padding: 40px 20px;
+        }
+
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: white;
+            font-size: 28px;
+        }
+
+        .coming-soon-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .coming-soon-subtitle {
+            font-size: 1.2rem;
+            color: #475569;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        .notify-form {
+            display: flex;
+            gap: 10px;
+            max-width: 400px;
+            margin: 0 auto 24px;
+        }
+
+        .notify-form input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .notify-form button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .notify-form button:hover {
+            opacity: 0.9;
+        }
+
+        /* Tombol Kembali */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            transition: all 0.2s;
+        }
+
+        .back-button:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 576px) {
+            .coming-soon-title {
+                font-size: 1.8rem;
+            }
+            .coming-soon-subtitle {
+                font-size: 1rem;
+            }
+            .notify-form {
+                flex-direction: column;
+            }
+            .back-button {
+                padding: 10px 16px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="coming-soon-container">
+        <div class="logo-placeholder">
+            <i class="fas fa-calculator"></i>
+        </div>
+
+        <h1 class="coming-soon-title">Segera Hadir</h1>
+        <p class="coming-soon-subtitle" id="dynamic-message">
+            <!-- Pesan akan diisi otomatis oleh JavaScript -->
+        </p>
+
+        <form class="notify-form" id="notifyForm">
+            <input type="email" placeholder="Masukkan email Anda" required>
+            <button type="submit">Tunggu</button>
+        </form>
+
+        <!-- Tombol Kembali -->
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <p class="footer-note">
+            Dikembangkan oleh <strong>Rama</strong> – Kantor Akuntan Publik Kuncara Budi Santosa & Rekan<br>
+            Samarinda, Indonesia
+        </p>
+    </div>
+
+    <script>
+        const serviceMap = {
+            blud: {
+                name: "Badan Layanan Umum Daerah (BLUD)",
+                description: "Kami sedang menyiapkan fitur lengkap untuk Bidang Layanan BLUD pada Monetary Sampling Unit."
+            },
+            jasa: {
+                name: "Jasa",
+                description: "Kami sedang menyiapkan fitur lengkap untuk Bidang Layanan Jasa pada Monetary Sampling Unit."
+            },
+            manufaktur: {
+                name: "Manufaktur",
+                description: "Kami sedang menyiapkan fitur lengkap untuk Bidang Layanan Manufaktur pada Monetary Sampling Unit."
+            },
+            blu: {
+                name: "Badan Layanan Umum (BLU)",
+                description: "Kami sedang menyiapkan fitur lengkap untuk Bidang Layanan BLU pada Monetary Sampling Unit."
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceKey = urlParams.get('service')?.toLowerCase();
+        const service = serviceMap[serviceKey] || serviceMap.blud;
+
+        document.getElementById('dynamic-message').innerHTML = `
+            ${service.description}<br>
+            Dapatkan notifikasi saat fitur <strong>${service.name}</strong> sudah tersedia!
+        `;
+
+        document.getElementById('notifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            alert(`Terima kasih! Kami akan mengabari Anda di: ${email}`);
+        });
+    </script>
+</body>
+</html>
