@@ -1201,3 +1201,112 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// ... (semua kode Anda tetap sama hingga function processData) ...
+
+function processData() {
+    const btn = document.getElementById('generateBtn');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Memproses...';
+    btn.disabled = true;
+
+    const namaKlien = safeGetElement('namaKlien').value;
+    currentNamaHeader = safeGetElement('namaHeader').value || 'Sampling Results';
+    currentNamaAkun = safeGetElement('namaAkun').value || '';
+    currentAuditInfo = {
+        dibuatOleh: safeGetElement('dibuatOleh').value || '',
+        tanggalDibuat: safeGetElement('tanggalDibuat').value || '',
+        direviewOleh: safeGetElement('direviewOleh').value || '',
+        tanggalDireview: safeGetElement('tanggalDireview').value || '',
+        namaKlien: safeGetElement('namaKlien').value || '',
+        schedule: safeGetElement('schedule').value || ''
+    };
+
+    if (!namaKlien.trim()) {
+        showErrorModal('Nama Klien wajib diisi!');
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+        return;
+    }
+
+    try {
+        const parsedData = parseDataPerColumn();
+        if (parsedData.length === 0) {
+            showErrorModal('Tidak ada data yang valid ditemukan!');
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+            return;
+        }
+        const totalNominal = parsedData.reduce((sum, item) => sum + item.nominal, 0);
+        const samplingMethod = safeGetElement('samplingMethod').value;
+        const sampledData = performSampling(parsedData, samplingMethod);
+        currentSampledData = sampledData;
+
+        // Render & update UI
+        renderResults(sampledData);
+        updateSummaryPanels(parsedData.length, totalNominal, samplingMethod, sampledData.length, sampledData, parsedData);
+    } catch (error) {
+        console.error('Error processing data:', error);
+        if (error.counts) {
+            showErrorModal(error.message, error.counts);
+        } else {
+            showErrorModal(error.message);
+        }
+    } finally {
+        btn.innerHTML = originalHTML;
+        btn.disabled = false;
+    }
+}
+
+function renderResults(data) {
+    const tbody = safeGetElement('resultsTable');
+    const container = safeGetElement('resultsContainer');
+    if (!tbody || !container) return;
+
+    if (data.length === 0) {
+        container.classList.add('empty');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center py-4">
+                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                    <div class="text-muted">Tidak ada data untuk ditampilkan</div>
+                </td>
+            </tr>
+        `;
+        safeGetElement('exportBtn').disabled = true;
+        return;
+    }
+
+    container.classList.remove('empty');
+    const sortedData = data.sort((a, b) => b.nominal - a.nominal);
+    tbody.innerHTML = sortedData.map((item, idx) => `
+        <tr>
+            <td>${item.tanggal}</td>
+            <td><code>${item.voucher}</code></td>
+            <td>${item.keterangan}</td>
+            <td class="text-end fw-medium">${formatCurrency(item.nominal)}</td>
+        </tr>
+    `).join('');
+    safeGetElement('exportBtn').disabled = false;
+}
+
+// ... (sisa fungsi exportToExcelBLUD, fillDummyData, dll tetap sama) ...
+
+// Dark Mode Toggle (pastikan hanya 1 kali)
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('darkModeToggle');
+    if (!toggleButton) return;
+
+    const saved = localStorage.getItem('theme');
+    const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (sysDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    toggleButton.innerHTML = `<i class="fas fa-${theme === 'dark' ? 'sun' : 'moon'}"></i>`;
+
+    toggleButton.addEventListener('click', () => {
+        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        toggleButton.innerHTML = `<i class="fas fa-${newTheme === 'dark' ? 'sun' : 'moon'}"></i>`;
+    });
+});

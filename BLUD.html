@@ -1,15 +1,31 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monetary Sampling Unit (MUS) - Alat Audit Profesional</title>
+    <title>Monetary Sampling Unit (MUS) - BLUD</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="stylesBLUD.css">
 </head>
 <body>
-    <div class="container-fluid">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <i class="fas fa-calculator me-2 text-primary"></i>
+                <span class="logo">Monetary Sampling Unit</span>
+            </a>
+            <div class="d-flex align-items-center">
+                <a href="index.html" class="btn btn-sm btn-outline-secondary me-2">« Kembali</a>
+                <button id="darkModeToggle" class="btn btn-sm" aria-label="Toggle dark mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid pt-5">
         <div class="row justify-content-center">
             <div class="col-12 col-xl-10">
                 <!-- Header -->
@@ -17,7 +33,8 @@
                     <h1><i class="fas fa-calculator me-3"></i>Monetary Sampling Unit (MUS)</h1>
                     <p>BADAN LAYANAN UMUM DAERAH (BLUD)</p>
                 </div>
-                <!-- Instructions Card -->
+
+                <!-- Petunjuk Penggunaan -->
                 <div class="card instruction-card mb-4">
                     <div class="card-header">
                         <i class="fas fa-info-circle me-2"></i>Petunjuk Penggunaan
@@ -49,7 +66,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Audit Information Form -->
+
+                <!-- Informasi Audit -->
                 <div class="card primary-card mb-4">
                     <div class="card-header">
                         <i class="fas fa-file-alt me-2"></i>Informasi Audit
@@ -86,27 +104,32 @@
                             </div>
                             <div class="audit-input-group">
                                 <label class="form-label fw-medium">Periode</label>
-                                <input type="text" class="form-control" id="schedule" placeholder="Masukkan schedule">
+                                <input type="text" class="form-control" id="schedule" placeholder="Contoh: Q4 2025, Jan–Des 2025">
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Data Input Section -->
+
+                <!-- Input Data Transaksi -->
                 <div class="card primary-card mb-4">
                     <div class="card-header">
                         <i class="fas fa-paste me-2"></i>Input Data Transaksi (Per Kolom)
                     </div>
                     <div class="card-body">
                         <div class="textarea-section">
-                            <div class="textarea-group">
+                            <div class="textarea-group position-relative">
                                 <label class="textarea-label">Tanggal</label>
-                                <textarea class="form-control" id="tanggalInput" placeholder="Contoh:
+                                <div class="position-relative">
+                                    <textarea class="form-control" id="tanggalInput" placeholder="Contoh:
 15/01/2025
 18 Des 2024
 2025-01-17"></textarea>
-                                <button class="btn btn-outline-secondary btn-sm dummy-data-btn" onclick="fillDummyData()">
-                                    <i class="fas fa-database me-1"></i>Isi Data Dummy (50 baris)
-                                </button>
+                                    <button class="btn btn-outline-secondary btn-sm dummy-data-btn position-absolute top-0 end-0"
+                                            style="transform: translateY(-100%); z-index: 1;"
+                                            onclick="fillDummyData()">
+                                        <i class="fas fa-database me-1"></i>Dummy
+                                    </button>
+                                </div>
                             </div>
                             <div class="textarea-group">
                                 <label class="textarea-label">Voucher</label>
@@ -136,30 +159,30 @@ Transportasi"></textarea>
                                 <option value="moderate" selected>Moderate (Top 10 + 10 Acak)</option>
                                 <option value="tinggi">Tinggi (Top 15 + 15 Acak)</option>
                             </select>
-                            <button class="btn btn-primary" onclick="showConfirmSamplingModal()">
+                            <button class="btn btn-primary" id="generateBtn" onclick="showConfirmSamplingModal()">
                                 <i class="fas fa-magic me-2"></i>Generate Sampel
                             </button>
                         </div>
                     </div>
                 </div>
-                <!-- Results and Summary Tabs -->
+
+                <!-- Hasil & Ringkasan -->
                 <div class="card">
                     <ul class="nav nav-tabs" id="resultTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="results-tab" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab">
+                            <button class="nav-link active" id="results-tab" data-bs-toggle="tab" data-bs-target="#results">
                                 <i class="fas fa-list-check me-2"></i>Hasil Sampling
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">
+                            <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary">
                                 <i class="fas fa-chart-bar me-2"></i>Ringkasan Data
                             </button>
                         </li>
                     </ul>
                     <div class="tab-content" id="resultTabContent">
-                        <!-- Results Tab -->
                         <div class="tab-pane fade show active" id="results" role="tabpanel">
-                            <div class="results-container">
+                            <div class="results-container" id="resultsContainer">
                                 <table class="table table-hover data-table mb-0">
                                     <thead>
                                         <tr>
@@ -185,7 +208,6 @@ Transportasi"></textarea>
                                 </button>
                             </div>
                         </div>
-                        <!-- Summary Tab -->
                         <div class="tab-pane fade" id="summary" role="tabpanel">
                             <div class="row">
                                 <div class="col-md-6">
@@ -266,15 +288,20 @@ Transportasi"></textarea>
             </div>
         </div>
     </div>
+
+    <!-- Modals -->
+    <!-- ... (same as your original error & confirm modals) ... -->
+    <!-- Saya sertakan di bawah agar file lengkap -->
+
     <!-- Error Modal -->
-    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content error-modal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorModalLabel">
+                    <h5 class="modal-title">
                         <i class="fas fa-exclamation-triangle me-2"></i>Validasi Data Gagal
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center mb-3">
@@ -296,20 +323,15 @@ Transportasi"></textarea>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-    <script src="script.js"></script>
-
     <!-- Sampling Confirmation Modal -->
-    <div class="modal fade" id="confirmSamplingModal" tabindex="-1" aria-labelledby="confirmSamplingModalLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmSamplingModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="confirmSamplingModalLabel">
+                    <h5 class="modal-title">
                         <i class="fas fa-question-circle me-2"></i>Konfirmasi Sampling
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center py-4">
                     <i class="fas fa-magic fa-3x text-primary mb-3"></i>
@@ -327,6 +349,10 @@ Transportasi"></textarea>
             </div>
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs@4.3.0/dist/exceljs.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
-
