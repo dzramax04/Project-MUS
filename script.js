@@ -1166,3 +1166,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// Dark Mode Toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleButton = document.getElementById('darkModeToggle');
+    if (!toggleButton) return;
+
+    // Cek preferensi dari localStorage atau sistem
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let currentTheme = 'light';
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        currentTheme = 'dark';
+    }
+
+    // Terapkan tema
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    updateToggleIcon(currentTheme);
+
+    // Event listener toggle
+    toggleButton.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        localStorage.setItem('theme', currentTheme);
+        updateToggleIcon(currentTheme);
+    });
+
+    function updateToggleIcon(theme) {
+        const icon = toggleButton.querySelector('i');
+        if (theme === 'dark') {
+            icon.className = 'fas fa-sun';
+        } else {
+            icon.className = 'fas fa-moon';
+        }
+    }
+});
