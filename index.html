@@ -11,32 +11,50 @@
             --primary: #1e3a8a;
             --primary-dark: #1e3a8a;
             --secondary: #0f766e;
-            --accent: #d97706;
-            --light: #f8fafc;
-            --dark: #0f172a;
+            --accent-blud: #1e3a8a;       /* Biru untuk BLUD */
+            --accent-jasa: #0f766e;       /* Hijau teal untuk Jasa */
+            --accent-manufaktur: #7c2d12; /* Coklat untuk Manufaktur */
+            --accent-blu: #4338ca;        /* Ungu untuk BLU */
+            --light-bg: #f8fafc;
+            --dark-bg: #0f172a;
+            --text-dark: #0f172a;
+            --text-light: #f1f5f9;
         }
-        
+
+        .dark-mode {
+            --light-bg: #0f172a;
+            --dark-bg: #020617;
+            --text-dark: #f1f5f9;
+            --text-light: #cbd5e1;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            color: var(--dark);
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s, color 0.3s;
         }
-        
+
         .navbar {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
         }
-        
+
+        .dark-mode .navbar {
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
         .hero-section {
             padding: 120px 0;
             background: linear-gradient(to bottom right, #dbeafe 0%, #bfdbfe 100%);
@@ -45,12 +63,18 @@
             justify-content: center;
             min-height: 80vh;
         }
-        
+
+        .dark-mode .hero-section {
+            background: linear-gradient(to bottom right, #1e293b 0%, #0f172a 100%);
+            color: var(--text-light);
+        }
+
         .hero-content {
             max-width: 700px;
             text-align: center;
+            padding: 0 20px;
         }
-        
+
         .hero-title {
             font-size: 2.5rem;
             font-weight: 800;
@@ -58,19 +82,30 @@
             margin-bottom: 20px;
             color: var(--primary-dark);
         }
-        
+
+        .dark-mode .hero-title {
+            color: #93c5fd;
+        }
+
         .hero-subtitle {
             font-size: 1.1rem;
-            font-weight: 400;
             margin-bottom: 30px;
             color: #334155;
         }
-        
+
+        .dark-mode .hero-subtitle {
+            color: #cbd5e1;
+        }
+
         .services-section {
             padding: 80px 0;
             background-color: white;
         }
-        
+
+        .dark-mode .services-section {
+            background-color: #111827;
+        }
+
         .section-title {
             text-align: center;
             margin-bottom: 50px;
@@ -78,7 +113,11 @@
             font-weight: 700;
             color: var(--primary-dark);
         }
-        
+
+        .dark-mode .section-title {
+            color: #93c5fd;
+        }
+
         .section-subtitle {
             text-align: center;
             max-width: 700px;
@@ -86,7 +125,11 @@
             color: #475569;
             font-size: 1.1rem;
         }
-        
+
+        .dark-mode .section-subtitle {
+            color: #cbd5e1;
+        }
+
         .service-card {
             background: white;
             border-radius: 16px;
@@ -95,103 +138,128 @@
             transition: all 0.3s ease;
             height: 100%;
             border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
         }
-        
+
+        .dark-mode .service-card {
+            background: #1e293b;
+            border-color: #334155;
+            color: var(--text-light);
+        }
+
         .service-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-            border-color: #cbd5e1;
         }
-        
+
         .service-header {
             padding: 25px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             text-align: center;
         }
-        
+
+        .service-header.blud { background: linear-gradient(135deg, var(--accent-blud) 0%, #3b82f6 100%); }
+        .service-header.jasa { background: linear-gradient(135deg, var(--accent-jasa) 0%, #10b981 100%); }
+        .service-header.manufaktur { background: linear-gradient(135deg, var(--accent-manufaktur) 0%, #d97706 100%); }
+        .service-header.blu { background: linear-gradient(135deg, var(--accent-blu) 0%, #818cf8 100%); }
+
         .service-title {
             font-size: 1.4rem;
             font-weight: 700;
             margin-bottom: 10px;
         }
-        
+
         .service-icon {
             font-size: 32px;
             margin-bottom: 15px;
         }
-        
+
         .service-body {
             padding: 25px;
             text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        
+
         .service-desc {
             color: #475569;
             margin-bottom: 20px;
             line-height: 1.6;
             min-height: 80px;
         }
-        
+
+        .dark-mode .service-desc {
+            color: #cbd5e1;
+        }
+
         .btn-service {
             display: inline-block;
-            background: var(--primary);
-            color: white;
             padding: 10px 25px;
             border-radius: 8px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
-            border: 2px solid var(--primary);
             width: 100%;
+            font-size: 1rem;
+            border: 2px solid;
         }
-        
+
+        .btn-service.blud { background: var(--accent-blud); color: white; border-color: var(--accent-blud); }
+        .btn-service.jasa { background: var(--accent-jasa); color: white; border-color: var(--accent-jasa); }
+        .btn-service.manufaktur { background: var(--accent-manufaktur); color: white; border-color: var(--accent-manufaktur); }
+        .btn-service.blu { background: var(--accent-blu); color: white; border-color: var(--accent-blu); }
+
         .btn-service:hover {
-            background: transparent;
-            color: var(--primary);
+            opacity: 0.9;
             transform: translateY(-2px);
         }
-        
+
         .logo {
             font-weight: 800;
             font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary);
         }
-        
+
+        .dark-mode .logo {
+            color: #93c5fd;
+        }
+
         .footer {
-            background: var(--dark);
-            color: white;
+            background: var(--dark-bg);
+            color: var(--text-light);
             padding: 40px 0 20px;
             margin-top: auto;
         }
-        
+
         .footer-title {
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 20px;
         }
-        
+
         .footer-links {
             list-style: none;
         }
-        
+
         .footer-links li {
             margin-bottom: 10px;
         }
-        
-        .footer-links a {
-            color: #cbd5e1;
+
+        .footer-links a,
+        .footer-links i {
+            color: #94a3b8;
             text-decoration: none;
             transition: color 0.3s;
         }
-        
-        .footer-links a:hover {
+
+        .footer-links a:hover,
+        .footer-links i:hover {
             color: white;
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 30px;
@@ -200,7 +268,7 @@
             color: #94a3b8;
             font-size: 0.9rem;
         }
-        
+
         .btn-get-started {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
@@ -212,21 +280,33 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(30, 58, 138, 0.3);
         }
-        
+
         .btn-get-started:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
         }
-        
+
+        /* Dark mode toggle */
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--primary);
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+
+        .dark-mode .dark-mode-toggle {
+            color: #93c5fd;
+        }
+
         @media (max-width: 768px) {
             .hero-title {
                 font-size: 2rem;
             }
-            
             .section-title {
                 font-size: 1.8rem;
             }
-            
             .hero-section {
                 padding: 80px 0;
                 min-height: 70vh;
@@ -239,10 +319,10 @@
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <i class="fas fa-calculator me-2 text-primary"></i>
+                <i class="fas fa-calculator me-2"></i>
                 <span class="logo">Monetary Sampling Unit</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -253,17 +333,22 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#layanan">Layanan</a>
                     </li>
+                    <li class="nav-item">
+                        <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section - Centered Content -->
+    <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-title">Solusi Sampling Unit Moneter untuk Profesional Audit</h1>
             <p class="hero-subtitle">
-                Alat canggih untuk melakukan sampling berbasis nilai (Monetary Unit Sampling) dengan presisi tinggi, 
+                Alat canggih untuk melakukan sampling berbasis nilai (Monetary Unit Sampling) dengan presisi tinggi,
                 sesuai standar audit profesional terkini.
             </p>
             <a href="#layanan" class="btn btn-get-started">
@@ -276,17 +361,17 @@
     <section class="services-section" id="layanan">
         <div class="container">
             <h2 class="section-title">Pilih Bidang Layanan</h2>
-            <p class="section-subtitle text-center">
+            <p class="section-subtitle">
                 Pilih bidang layanan yang sesuai dengan kebutuhan audit Anda untuk mengakses template dan metode sampling yang relevan
             </p>
-            
+
             <div class="row g-4">
-                <!-- Badan Layanan Umum Daerah (BLUD) -->
+                <!-- BLUD -->
                 <div class="col-md-6 col-lg-3">
                     <div class="service-card">
-                        <div class="service-header">
+                        <div class="service-header blud">
                             <div class="service-icon">
-                                <i class="fas fa-building"></i>
+                                <i class="fas fa-building" aria-hidden="true"></i>
                             </div>
                             <h4 class="service-title">Badan Layanan Umum Daerah (BLUD)</h4>
                         </div>
@@ -294,19 +379,19 @@
                             <p class="service-desc">
                                 Sampling transaksi BLUD untuk menguji keberadaan dan valuation.
                             </p>
-                            <a href="BLUD.html" class="btn-service">
+                            <a href="BLUD.html" class="btn-service blud">
                                 Mulai Sampling
                             </a>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Jasa -->
                 <div class="col-md-6 col-lg-3">
                     <div class="service-card">
-                        <div class="service-header">
+                        <div class="service-header jasa">
                             <div class="service-icon">
-                                <i class="fas fa-briefcase"></i>
+                                <i class="fas fa-briefcase" aria-hidden="true"></i>
                             </div>
                             <h4 class="service-title">Jasa</h4>
                         </div>
@@ -314,19 +399,19 @@
                             <p class="service-desc">
                                 Sampling transaksi jasa untuk menguji kelengkapan dan akurasi.
                             </p>
-                            <a href="Jasa.html" class="btn-service">
+                            <a href="Jasa.html" class="btn-service jasa">
                                 Mulai Sampling
                             </a>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Manufaktur -->
                 <div class="col-md-6 col-lg-3">
                     <div class="service-card">
-                        <div class="service-header">
+                        <div class="service-header manufaktur">
                             <div class="service-icon">
-                                <i class="fas fa-industry"></i>
+                                <i class="fas fa-industry" aria-hidden="true"></i>
                             </div>
                             <h4 class="service-title">Manufaktur</h4>
                         </div>
@@ -334,19 +419,19 @@
                             <p class="service-desc">
                                 Sampling transaksi manufaktur untuk menguji keberadaan dan valuation.
                             </p>
-                            <a href="index.html" class="btn-service">
+                            <a href="Manufaktur.html" class="btn-service manufaktur">
                                 Mulai Sampling
                             </a>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Badan Layanan Umum (BLU) -->
+
+                <!-- BLU -->
                 <div class="col-md-6 col-lg-3">
                     <div class="service-card">
-                        <div class="service-header">
+                        <div class="service-header blu">
                             <div class="service-icon">
-                                <i class="fas fa-landmark"></i>
+                                <i class="fas fa-landmark" aria-hidden="true"></i>
                             </div>
                             <h4 class="service-title">Badan Layanan Umum (BLU)</h4>
                         </div>
@@ -354,7 +439,7 @@
                             <p class="service-desc">
                                 Sampling transaksi BLU untuk menguji keberadaan dan otorisasi.
                             </p>
-                            <a href="index.html" class="btn-service">
+                            <a href="BLU.html" class="btn-service blu">
                                 Mulai Sampling
                             </a>
                         </div>
@@ -377,17 +462,17 @@
                 <div class="col-md-4 mb-4">
                     <h5 class="footer-title">Kontak</h5>
                     <ul class="footer-links">
-                        <li><i class="fas fa-envelope me-2"></i> dzramax04@gmail.com</li>
-                        <li><i class="fas fa-phone me-2"></i> +62 878 8133 1743</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i> Samarinda, Indonesia</li>
+                        <li><i class="fas fa-envelope me-2" aria-hidden="true"></i> dzramax04@gmail.com</li>
+                        <li><i class="fas fa-phone me-2" aria-hidden="true"></i> +62 878 8133 1743</li>
+                        <li><i class="fas fa-map-marker-alt me-2" aria-hidden="true"></i> Samarinda, Indonesia</li>
                     </ul>
                 </div>
                 <div class="col-md-4 mb-4">
                     <h5 class="footer-title">Navigasi</h5>
                     <ul class="footer-links">
-                        <li><a href="#">Beranda</a></li>
-                        <li><a href="#layanan">Bidang Layanan</a></li>
-                        <li><a href="#">Dokumentasi</a></li>
+                        <li><a href="#" aria-label="Kembali ke beranda">Beranda</a></li>
+                        <li><a href="#layanan" aria-label="Lihat bidang layanan">Bidang Layanan</a></li>
+                        <li><a href="#" aria-label="Lihat dokumentasi">Dokumentasi</a></li>
                     </ul>
                 </div>
             </div>
@@ -399,16 +484,40 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Smooth scrolling for anchor links
+        // Dark mode toggle
+        const toggleButton = document.getElementById('darkModeToggle');
+        const body = document.body;
+
+        // Load saved preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            body.classList.add('dark-mode');
+            toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        toggleButton.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+                toggleButton.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                toggleButton.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+        });
+
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
             });
         });
     </script>
 </body>
 </html>
-
