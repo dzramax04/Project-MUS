@@ -34,36 +34,47 @@
                     <p>BADAN LAYANAN UMUM DAERAH (BLUD)</p>
                 </div>
 
-                <!-- Petunjuk Penggunaan -->
-                <div class="card instruction-card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-info-circle me-2"></i>Petunjuk Penggunaan
+                <!-- Petunjuk Penggunaan (Sesuai Gambar) -->
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white d-flex align-items-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span class="h5 mb-0">Petunjuk Penggunaan</span>
                     </div>
-                    <div class="card-body">
-                        <div class="instruction-item">
-                            <strong>Salin data Excel Anda</strong> yang berisi kolom: Tanggal, Voucher, Keterangan, dan Nominal
-                        </div>
-                        <div class="instruction-item">
-                            <strong>Tempel data yang disalin</strong> ke masing-masing kolom textarea di bawah (pisahkan per kolom)
-                        </div>
-                        <div class="instruction-item">
-                            Format tanggal yang didukung: dd/mm/yyyy, 18 Des 2024, 18 Dec 24, yyyy-mm-dd
-                        </div>
-                        <div class="instruction-item">
-                            Format nominal yang didukung: 1.000.000,00 atau 1,000,000.00 akan dikonversi otomatis
-                        </div>
-                        <div class="instruction-item">
-                            Pastikan <strong>semua kolom memiliki jumlah baris yang sama</strong>
-                        </div>
-                        <div class="instruction-item">
-                            Gunakan tombol <strong>"Isi Data Dummy"</strong> untuk mengisi contoh data 50 baris
-                        </div>
-                        <div class="instruction-item">
-                            Pilih metode sampling dan klik <strong>"Generate Sampel"</strong>
-                        </div>
-                        <div class="instruction-item">
-                            Setelah hasil muncul, klik <strong>"Export ke Excel"</strong> untuk mengunduh file Excel dengan format lengkap
-                        </div>
+                    <div class="card-body bg-dark text-light p-4">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Salin data Excel Anda yang berisi kolom: Tanggal, Voucher, Keterangan, dan Nominal</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Tempel data yang disalin ke masing-masing kolom textarea di bawah (pisahkan per kolom)</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Format tanggal yang didukung: dd/mm/yyyy, 18 Des 2024, 18 Dec 24, yyyy-mm-dd</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Format nominal yang didukung: 1.000.000,00 atau 1,000,000.00 akan dikonversi otomatis</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Pastikan semua kolom memiliki jumlah baris yang sama</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Gunakan tombol <strong>"Isi Data Dummy"</strong> untuk mengisi contoh data 50 baris</span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Pilih metode sampling dan klik <strong>"Generate Sampel"</strong></span>
+                            </li>
+                            <li class="mb-3 d-flex align-items-start">
+                                <i class="fas fa-check text-success me-2 mt-1"></i>
+                                <span>Setelah hasil muncul, klik <strong>"Export ke Excel"</strong> untuk mengunduh file Excel dengan format lengkap</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -195,8 +206,8 @@ Transportasi"></textarea>
                                     <tbody id="resultsTable">
                                         <tr>
                                             <td colspan="4" class="text-center py-4">
-                                                <i class="fas fa-file-alt fa-2x text-muted mb-2"></i>
-                                                <div class="text-muted">Belum ada data sampling yang dihasilkan</div>
+                                                <i class="fas fa-file-alt fa-2x" style="color: var(--text-muted);"></i>
+                                                <div style="color: var(--text-muted);">Belum ada data sampling yang dihasilkan</div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -290,10 +301,6 @@ Transportasi"></textarea>
     </div>
 
     <!-- Modals -->
-    <!-- ... (same as your original error & confirm modals) ... -->
-    <!-- Saya sertakan di bawah agar file lengkap -->
-
-    <!-- Error Modal -->
     <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content error-modal">
@@ -323,7 +330,6 @@ Transportasi"></textarea>
         </div>
     </div>
 
-    <!-- Sampling Confirmation Modal -->
     <div class="modal fade" id="confirmSamplingModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

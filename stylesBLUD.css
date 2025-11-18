@@ -107,6 +107,7 @@ body {
   box-shadow: var(--box-shadow);
   margin-bottom: 1.5rem;
   transition: transform 0.25s ease;
+  color: var(--text-color);
 }
 .card:hover {
   transform: translateY(-2px);
@@ -123,6 +124,7 @@ body {
   font-weight: 600;
   font-size: 1.1rem;
   border-bottom: 1px solid var(--border-color);
+  color: inherit;
 }
 .primary-card .card-header {
   background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
@@ -170,6 +172,7 @@ textarea.form-control {
   font-weight: 600;
   border-radius: 10px;
   transition: all 0.3s ease;
+  color: white;
 }
 .btn-primary:hover {
   opacity: 0.95;
@@ -221,6 +224,7 @@ textarea.form-control {
 /* Tables */
 .data-table {
   font-size: 0.92rem;
+  color: var(--text-color);
 }
 .data-table th {
   background-color: #f0f7ff;
@@ -235,6 +239,7 @@ textarea.form-control {
 .data-table td {
   padding: 0.75rem;
   vertical-align: middle;
+  color: var(--text-color);
 }
 [data-theme="dark"] .data-table td {
   color: var(--text-color);
@@ -252,6 +257,7 @@ textarea.form-control {
 #resultsTable tr:only-child td {
   opacity: 0.7;
   font-style: italic;
+  color: var(--text-muted);
 }
 
 /* Instructions */
@@ -260,6 +266,7 @@ textarea.form-control {
   margin-bottom: 1rem;
   padding-left: 1.5rem;
   position: relative;
+  color: var(--text-color);
 }
 .instruction-item:before {
   content: "✓";
@@ -343,11 +350,13 @@ textarea.form-control {
   background: var(--card-bg);
   border-top: 1px solid var(--border-color);
   border-radius: 0 0 14px 14px;
+  color: var(--text-color);
 }
 .summary-tab h5 {
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #edf2f7;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 [data-theme="dark"] .summary-tab h5 {
   border-bottom-color: var(--border-color);
@@ -357,7 +366,8 @@ textarea.form-control {
   display: flex;
   justify-content: space-between;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #edf2f7;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 [data-theme="dark"] .summary-detail-item {
   border-bottom-color: var(--border-color);
@@ -367,10 +377,10 @@ textarea.form-control {
 }
 .summary-detail-label {
   font-weight: 600;
-  color: #4a5568;
+  color: var(--text-muted);
 }
 [data-theme="dark"] .summary-detail-label {
-  color: #cbd5e1;
+  color: var(--text-muted);
 }
 .summary-detail-value {
   color: var(--primary-blue);
@@ -385,6 +395,7 @@ textarea.form-control {
   border-radius: 14px;
   border: none;
   box-shadow: var(--box-shadow);
+  color: var(--text-color);
 }
 .modal-header {
   border-radius: 14px 14px 0 0 !important;
@@ -400,6 +411,7 @@ textarea.form-control {
   padding: 1rem;
   border-radius: 8px;
   margin: 1rem 0;
+  color: var(--text-color);
 }
 [data-theme="dark"] .error-details {
   background: #1a1a2e;
