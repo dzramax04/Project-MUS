@@ -1131,77 +1131,6 @@ async function exportToExcelBLUD() {
     }
 }
 
-// Dark Mode Toggle
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('darkModeToggle');
-    if (!toggleButton) return;
-
-    // Cek preferensi dari localStorage atau sistem
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    let currentTheme = 'light';
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        currentTheme = 'dark';
-    }
-
-    // Terapkan tema
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    updateToggleIcon(currentTheme);
-
-    // Event listener toggle
-    toggleButton.addEventListener('click', () => {
-        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        localStorage.setItem('theme', currentTheme);
-        updateToggleIcon(currentTheme);
-    });
-
-    function updateToggleIcon(theme) {
-        const icon = toggleButton.querySelector('i');
-        if (theme === 'dark') {
-            icon.className = 'fas fa-sun';
-        } else {
-            icon.className = 'fas fa-moon';
-        }
-    }
-});
-
-// Dark Mode Toggle
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('darkModeToggle');
-    if (!toggleButton) return;
-
-    // Cek preferensi dari localStorage atau sistem
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    let currentTheme = 'light';
-    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-        currentTheme = 'dark';
-    }
-
-    // Terapkan tema
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    updateToggleIcon(currentTheme);
-
-    // Event listener toggle
-    toggleButton.addEventListener('click', () => {
-        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', currentTheme);
-        localStorage.setItem('theme', currentTheme);
-        updateToggleIcon(currentTheme);
-    });
-
-    function updateToggleIcon(theme) {
-        const icon = toggleButton.querySelector('i');
-        if (theme === 'dark') {
-            icon.className = 'fas fa-sun';
-        } else {
-            icon.className = 'fas fa-moon';
-        }
-    }
-});
-
 // ... (semua kode Anda tetap sama hingga function processData) ...
 
 function processData() {
@@ -1292,21 +1221,39 @@ function renderResults(data) {
 
 // ... (sisa fungsi exportToExcelBLUD, fillDummyData, dll tetap sama) ...
 
-// Dark Mode Toggle (pastikan hanya 1 kali)
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('darkModeToggle');
-    if (!toggleButton) return;
+// ... (semua fungsi Anda tetap sama: formatCurrency, safeGetElement, showErrorModal, parseDate, dll)
 
-    const saved = localStorage.getItem('theme');
-    const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = saved || (sysDark ? 'dark' : 'light');
-    document.documentElement.setAttribute('data-theme', theme);
-    toggleButton.innerHTML = `<i class="fas fa-${theme === 'dark' ? 'sun' : 'moon'}"></i>`;
+function renderResults(data) {
+    const tbody = safeGetElement('resultsTable');
+    const container = safeGetElement('resultsContainer');
+    if (!tbody || !container) return;
 
-    toggleButton.addEventListener('click', () => {
-        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        toggleButton.innerHTML = `<i class="fas fa-${newTheme === 'dark' ? 'sun' : 'moon'}"></i>`;
-    });
-});
+    if (data.length === 0) {
+        container.classList.add('empty');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center py-5 empty-state">
+                    <div class="empty-icon mb-3">
+                        <i class="fas fa-clipboard-list fa-3x" style="color: #a8dadc;"></i>
+                    </div>
+                    <h6 class="text-muted mb-2">Belum ada data sampling yang dihasilkan</h6>
+                    <p class="text-muted small">Silakan isi data transaksi dan klik <strong>Generate Sampel</strong></p>
+                </td>
+            </tr>
+        `;
+        safeGetElement('exportBtn').disabled = true;
+        return;
+    }
+
+    container.classList.remove('empty');
+    const sortedData = data.sort((a, b) => b.nominal - a.nominal);
+    tbody.innerHTML = sortedData.map((item, idx) => `
+        <tr>
+            <td>${item.tanggal}</td>
+            <td><code>${item.voucher}</code></td>
+            <td>${item.keterangan}</td>
+            <td class="text-end fw-medium">${formatCurrency(item.nominal)}</td>
+        </tr>
+    `).join('');
+    safeGetElement('exportBtn').disabled = false;
+}
