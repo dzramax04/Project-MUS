@@ -1,7 +1,7 @@
 # Project-MUS: Solusi Sampling Unit Moneter untuk Profesional Audit
 
 > 🎯 Alat canggih untuk melakukan **Monetary Unit Sampling (MUS)** dengan presisi tinggi, sesuai standar audit profesional terkini.  
-> 💼 Dikembangkan oleh **Rama**, Auditor & Konsultan Keuangan — Samarinda, Kalimantan Timur  
+> 💼 Dikembangkan oleh **Rama**, Samarinda, Kalimantan Timur  
 > 🌐 Website: [https://dzramax04.github.io/Project-MUS/](https://dzramax04.github.io/Project-MUS/)
 
 ---
