@@ -1257,3 +1257,55 @@ function renderResults(data) {
     `).join('');
     safeGetElement('exportBtn').disabled = false;
 }
+
+// Handle konfirmasi reset
+document.getElementById('confirmResetBtn').addEventListener('click', function() {
+  // Tutup modal
+  const modal = bootstrap.Modal.getInstance(document.getElementById('confirmResetModal'));
+  modal.hide();
+
+  // Lakukan reset
+  document.getElementById('tanggalInput').value = '';
+  document.getElementById('voucherInput').value = '';
+  document.getElementById('keteranganInput').value = '';
+  document.getElementById('nominalInput').value = '';
+
+  document.getElementById('namaKlien').value = '';
+  document.getElementById('namaHeader').value = '';
+  document.getElementById('namaAkun').value = '';
+  document.getElementById('dibuatOleh').value = '';
+  document.getElementById('tanggalDibuat').value = '';
+  document.getElementById('direviewOleh').value = '';
+  document.getElementById('tanggalDireview').value = '';
+  document.getElementById('schedule').value = '';
+
+  // Reset hasil tabel
+  document.getElementById('resultsTable').innerHTML = `
+    <tr>
+      <td colspan="4" class="text-center py-5 empty-state">
+        <div class="empty-icon mb-3">
+          <i class="fas fa-clipboard-list fa-3x" style="color: #a8dadc;"></i>
+        </div>
+        <h6 class="text-muted mb-2">Belum ada data sampling yang dihasilkan</h6>
+        <p class="text-muted small">Silakan isi data transaksi dan klik <strong>Generate Sampel</strong></p>
+      </td>
+    </tr>
+  `;
+  document.getElementById('exportBtn').disabled = true;
+
+  // Reset ringkasan
+  const summaryFields = [
+    'summaryTotalData', 'summaryTotalNominal', 'summaryMetodeSampling',
+    'summaryJumlahSampel', 'summaryMinNominal', 'summaryMaxNominal',
+    'summaryAvgNominal', 'summaryCoverage',
+    'summaryNamaKlien', 'summaryNamaHeader', 'summaryNamaAkun',
+    'summaryDibuatOleh', 'summaryDireviewOleh', 'summarySchedule'
+  ];
+  summaryFields.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (id.includes('Nominal')) el.textContent = 'Rp 0';
+    else if (id === 'summaryTotalData' || id === 'summaryJumlahSampel') el.textContent = '0';
+    else el.textContent = '-';
+  });
+});
