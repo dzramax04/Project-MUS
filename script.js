@@ -112,15 +112,17 @@ function showErrorModal(message, counts = null) {
     modal.show();
 }
 
-// Enhanced date parsing function
+// Enhanced date parsing function — mendukung format DD-Mmm-YYYY (EN & ID)
 function parseDate(dateStr) {
     if (!dateStr) return null;
     const input = dateStr.trim();
-    // Try ISO format first (yyyy-mm-dd)
+
+    // 1. Format ISO: yyyy-mm-dd
     if (/^\d{4}-\d{2}-\d{2}$/.test(input)) {
         return input;
     }
-    // Try dd/mm/yyyy format
+
+    // 2. Format dd/mm/yyyy atau dd-mm-yyyy
     const ddMmYyyyMatch = input.match(/^(\d{1,2})[/\-](\d{1,2})[/\-](\d{2,4})$/);
     if (ddMmYyyyMatch) {
         let day = ddMmYyyyMatch[1].padStart(2, '0');
@@ -131,28 +133,52 @@ function parseDate(dateStr) {
         }
         return `${year}-${month}-${day}`;
     }
-    /// Try "23-Mar-2024", "24-Mei-2024", "30-Sep-2024" format
+
+    // 3. Format "23-Mar-2024", "24-Mei-2024", "07-Okt-2024", "15 Agu 2024", dll
     const monthNames = {
+        // English 3-letter
         'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04', 'may': '05', 'jun': '06',
         'jul': '07', 'aug': '08', 'sep': '09', 'oct': '10', 'nov': '11', 'dec': '12',
+        // Indonesian full
         'januari': '01', 'februari': '02', 'maret': '03', 'april': '04', 'mei': '05', 'juni': '06',
-        'juli': '07', 'agustus': '08', 'september': '09', 'oktober': '10', 'november': '11', 'desember': '12'
+        'juli': '07', 'agustus': '08', 'september': '09', 'oktober': '10', 'november': '11', 'desember': '12',
+        // Indonesian 3-letter (tambahan kritis!)
+        'agu': '08',  // Agustus
+        'okt': '10',  // Oktober
+        'des': '12'   // Desember
+        // Catatan: Jan–Jul, Sep, Nov sama di EN/ID → sudah tercakup
     };
 
-    // Match DD-Mmm-YYYY or DD/Mmm/YYYY or DD Mmm YYYY
+    // Regex: cocok dengan "23-Mar-2024", "24 Mei 2024", "07/Okt/2024"
     const dateMatch = input.match(/^(\d{1,2})[-\/\s](\w{3,})[-\/\s](\d{4})$/i);
     if (dateMatch) {
-        const day = dateMatch[1];
+        const day = dateMatch[1].padStart(2, '0');
         const monthAbbr = dateMatch[2].toLowerCase().substring(0, 3);
         const year = dateMatch[3];
         if (monthNames[monthAbbr]) {
-            const formattedDay = day.padStart(2, '0');
-            const formattedMonth = monthNames[monthAbbr];
-            return `${year}-${formattedMonth}-${formattedDay}`;
+            const month = monthNames[monthAbbr];
+            return `${year}-${month}-${day}`;
         }
     }
-    // If all parsing fails, return original string (will be handled as invalid)
-    return input;
+
+    // 4. Fallback: format "18 Des 2024" (spasi saja, tanpa tanda hubung)
+    const parts = input.split(/\s+/);
+    if (parts.length >= 2) {
+        const day = parts[0];
+        const monthAbbr = parts[1].toLowerCase().substring(0, 3);
+        const year = parts[2] || new Date().getFullYear().toString();
+        if (day && /^\d+$/.test(day) && monthNames[monthAbbr]) {
+            const formattedDay = day.padStart(2, '0');
+            const formattedMonth = monthNames[monthAbbr];
+            const formattedYear = year.length === 2
+                ? (parseInt(year) >= 70 ? '19' + year : '20' + year)
+                : year;
+            return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+        }
+    }
+
+    // Jika semua gagal, kembalikan null (bukan string mentah!)
+    return null;
 }
 
 // Enhanced nominal parsing function
@@ -673,9 +699,14 @@ function processData() {
                 // Kolom A: No
                 worksheet.getCell(`A${row}`).value = idx + 1;
 
-                // Kolom B: Tgl → format dd/mm/yyyy
-                worksheet.getCell(`B${row}`).value = new Date(item.tanggal);
-                worksheet.getCell(`B${row}`).numFmt = 'dd/mm/yyyy';
+                // Kolom B: Tgl → format dd/mm/yyyy (aman dari Invalid Date)
+                const dateVal = item.tanggal ? new Date(item.tanggal) : null;
+                if (dateVal && !isNaN(dateVal)) {
+                    worksheet.getCell(`B${row}`).value = dateVal;
+                    worksheet.getCell(`B${row}`).numFmt = 'dd/mm/yyyy';
+                } else {
+                    worksheet.getCell(`B${row}`).value = ''; // biarkan kosong jika tanggal tidak valid
+                }
 
                 // Kolom C: Voucher
                 worksheet.getCell(`C${row}`).value = item.voucher;
