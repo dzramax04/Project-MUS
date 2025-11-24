@@ -8,6 +8,14 @@ let currentAuditInfo = {};
 document.getElementById('tanggalDibuat').valueAsDate = new Date();
 document.getElementById('tanggalDireview').valueAsDate = new Date();
 
+function cleanText(str) {
+    if (str == null) return '';
+    let s = String(str);
+    s = s.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ' ');
+    s = s.replace(/[\r\n\t]/g, ' ');
+    return s.trim().replace(/\s+/g, ' ');
+}
+
 function formatCurrency(amount) {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -123,23 +131,24 @@ function parseDate(dateStr) {
         }
         return `${year}-${month}-${day}`;
     }
-    // Try "18 Des 2024" or "18 Dec 2024" format
+    /// Try "23-Mar-2024", "24-Mei-2024", "30-Sep-2024" format
     const monthNames = {
         'jan': '01', 'feb': '02', 'mar': '03', 'apr': '04', 'may': '05', 'jun': '06',
         'jul': '07', 'aug': '08', 'sep': '09', 'oct': '10', 'nov': '11', 'dec': '12',
         'januari': '01', 'februari': '02', 'maret': '03', 'april': '04', 'mei': '05', 'juni': '06',
         'juli': '07', 'agustus': '08', 'september': '09', 'oktober': '10', 'november': '11', 'desember': '12'
     };
-    const dateParts = input.split(/\s+/);
-    if (dateParts.length >= 2) {
-        const day = dateParts[0];
-        const monthAbbr = dateParts[1].toLowerCase().substring(0, 3);
-        const year = dateParts[2] || new Date().getFullYear().toString();
-        if (day && monthAbbr && monthNames[monthAbbr]) {
+
+    // Match DD-Mmm-YYYY or DD/Mmm/YYYY or DD Mmm YYYY
+    const dateMatch = input.match(/^(\d{1,2})[-\/\s](\w{3,})[-\/\s](\d{4})$/i);
+    if (dateMatch) {
+        const day = dateMatch[1];
+        const monthAbbr = dateMatch[2].toLowerCase().substring(0, 3);
+        const year = dateMatch[3];
+        if (monthNames[monthAbbr]) {
             const formattedDay = day.padStart(2, '0');
             const formattedMonth = monthNames[monthAbbr];
-            const formattedYear = year.length === 2 ? (parseInt(year) >= 70 ? '19' + year : '20' + year) : year;
-            return `${formattedYear}-${formattedMonth}-${formattedDay}`;
+            return `${year}-${formattedMonth}-${formattedDay}`;
         }
     }
     // If all parsing fails, return original string (will be handled as invalid)
@@ -672,7 +681,7 @@ function processData() {
                 worksheet.getCell(`C${row}`).value = item.voucher;
 
                 // Kolom D: Nama Transaksi
-                worksheet.getCell(`D${row}`).value = item.keterangan;
+                worksheet.getCell(`D${row}`).value = cleanText(item.keterangan);
 
                 // Kolom E: Jumlah Menurut GL
                 worksheet.getCell(`E${row}`).value = item.nominal;
