@@ -872,7 +872,8 @@ function processData() {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'Uji_Detil_Sampling.xlsx';
+            const fileName = `${currentNamaHeader || 'Sampling Results'} - ${currentNamaAkun || 'Akun'}.xlsx`;
+            a.download = fileName;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1169,7 +1170,8 @@ async function exportToExcelBLUD() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'Uji_Detil_Sampling.xlsx';
+        const fileName = `${currentNamaHeader || 'Sampling Results'} - ${currentNamaAkun || 'Akun'}.xlsx`;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
