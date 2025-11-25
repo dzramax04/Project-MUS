@@ -361,32 +361,41 @@ function getRandomItems(array, count) {
 }
 
 function performSampling(data, method) {
+    // Filter hanya data dengan nominal > 0
+    const validData = data.filter(item => item.nominal > 0);
+    
     // Sort by nominal descending
-    const sortedData = [...data].sort((a, b) => b.nominal - a.nominal);
+    const sortedData = [...validData].sort((a, b) => b.nominal - a.nominal);
+    
     let sampledData = [];
-    switch(method) {
+    
+    switch (method) {
         case 'rendah':
             // Top 10 by nominal
             sampledData = sortedData.slice(0, Math.min(10, sortedData.length));
             break;
+            
         case 'moderate':
-            // Top 10 + 10 random
+            // Top 10 + 10 random (from remaining valid data)
             const top10 = sortedData.slice(0, Math.min(10, sortedData.length));
             const remainingData = sortedData.length > 10 ? sortedData.slice(10) : [];
             const random10 = remainingData.length > 0 ? getRandomItems(remainingData, 10) : [];
             sampledData = [...top10, ...random10];
             break;
+            
         case 'tinggi':
-            // Top 15 + 15 random
+            // Top 15 + 15 random (from remaining valid data)
             const top15 = sortedData.slice(0, Math.min(15, sortedData.length));
             const remainingDataHigh = sortedData.length > 15 ? sortedData.slice(15) : [];
             const random15 = remainingDataHigh.length > 0 ? getRandomItems(remainingDataHigh, 15) : [];
             sampledData = [...top15, ...random15];
             break;
+            
         default:
             sampledData = sortedData.slice(0, Math.min(10, sortedData.length));
     }
-    // Remove duplicates (in case random selection picks from top)
+
+    // Remove duplicates (in case random selection overlaps with top)
     const uniqueData = [];
     const seen = new Set();
     for (const item of sampledData) {
@@ -396,6 +405,7 @@ function performSampling(data, method) {
             uniqueData.push(item);
         }
     }
+    
     return uniqueData;
 }
 
