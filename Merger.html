@@ -1,106 +1,183 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excel Sheet Merger (Pro Formatting)</title>
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excel Sheet Merger (Pro Formatting + Dropdown)</title>
+
+    <!-- Pastikan tidak ada spasi di akhir URL -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #eef2f3; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 450px; text-align: center; }
-        h2 { color: #2c3e50; margin-bottom: 5px; }
-        p { color: #7f8c8d; font-size: 0.9em; margin-bottom: 25px; }
-        
-        .upload-box { border: 2px dashed #bdc3c7; padding: 20px; border-radius: 8px; cursor: pointer; transition: 0.3s; position: relative; }
-        .upload-box:hover { border-color: #2ecc71; background-color: #f0fdf4; }
-        input[type="file"] { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-        
-        .btn { background-color: #2ecc71; color: white; padding: 12px 25px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 20px; transition: 0.2s; }
-        .btn:hover { background-color: #27ae60; }
-        .btn:disabled { background-color: #bdc3c7; cursor: not-allowed; }
-        
-        #fileList { text-align: left; margin-top: 15px; font-size: 0.85em; color: #34495e; max-height: 100px; overflow-y: auto; }
-        #status { margin-top: 15px; font-weight: bold; font-size: 0.9em; min-height: 20px; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #2ecc71; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; display: none;}
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #eef2f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 450px;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        p {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 25px;
+        }
+
+        .upload-box {
+            border: 2px dashed #bdc3c7;
+            padding: 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+        .upload-box:hover {
+            border-color: #2ecc71;
+            background-color: #f0fdf4;
+        }
+        input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .btn {
+            background-color: #2ecc71;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background-color: #27ae60;
+        }
+        .btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        #fileList {
+            text-align: left;
+            margin-top: 15px;
+            font-size: 0.85em;
+            color: #34495e;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+            min-height: 20px;
+        }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2ecc71;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
+    <div class="card">
+        <h2>Excel Sheet Merger Pro</h2>
+        <p>Gabung file Excel dengan mempertahankan Format, Style & Dropdown</p>
 
-<div class="card">
-    <h2>Excel Sheet Merger Pro</h2>
-    <p>Gabung file Excel dengan mempertahankan Format & Style</p>
+        <div class="upload-box">
+            <span id="uploadText">Klik atau Tarik File Excel ke sini</span>
+            <input type="file" id="uploadFile" multiple accept=".xlsx" />
+        </div>
 
-    <div class="upload-box">
-        <span id="uploadText">Klik atau Tarik File Excel ke sini</span>
-        <input type="file" id="uploadFile" multiple accept=".xlsx" />
+        <div id="fileList"></div>
+
+        <button class="btn" id="btnProcess" onclick="processFiles()" disabled>Gabungkan & Download</button>
+
+        <div id="status">
+            <div class="loader" id="loadingIcon"></div>
+            <span id="statusText"></span>
+        </div>
     </div>
 
-    <div id="fileList"></div>
+    <script>
+        const fileInput = document.getElementById('uploadFile');
+        const btnProcess = document.getElementById('btnProcess');
+        const statusText = document.getElementById('statusText');
+        const loadingIcon = document.getElementById('loadingIcon');
+        const fileList = document.getElementById('fileList');
+        const uploadText = document.getElementById('uploadText');
+        let files = [];
 
-    <button class="btn" id="btnProcess" onclick="processFiles()" disabled>Gabungkan & Download</button>
-    
-    <div id="status">
-        <div class="loader" id="loadingIcon"></div>
-        <span id="statusText"></span>
-    </div>
-</div>
+        fileInput.addEventListener('change', function (e) {
+            files = Array.from(e.target.files);
+            if (files.length > 0) {
+                btnProcess.disabled = false;
+                uploadText.innerText = `${files.length} file terpilih`;
+                fileList.innerHTML = files.map(f => `<div>📄 ${f.name}</div>`).join('');
+                statusText.innerText = "Siap memproses...";
+                statusText.style.color = "#333";
+            }
+        });
 
-<script>
-    const fileInput = document.getElementById('uploadFile');
-    const btnProcess = document.getElementById('btnProcess');
-    const statusText = document.getElementById('statusText');
-    const loadingIcon = document.getElementById('loadingIcon');
-    const fileList = document.getElementById('fileList');
-    const uploadText = document.getElementById('uploadText');
-    let files = [];
-
-    fileInput.addEventListener('change', function(e) {
-        files = Array.from(e.target.files);
-        if(files.length > 0) {
-            btnProcess.disabled = false;
-            uploadText.innerText = `${files.length} file terpilih`;
-            fileList.innerHTML = files.map(f => `<div>📄 ${f.name}</div>`).join('');
-            statusText.innerText = "Siap memproses...";
+        async function processFiles() {
+            btnProcess.disabled = true;
+            loadingIcon.style.display = "inline-block";
+            statusText.innerText = "Sedang membaca dan menyalin format...";
             statusText.style.color = "#333";
-        }
-    });
 
-    async function processFiles() {
-        // UI Updates
-        btnProcess.disabled = true;
-        loadingIcon.style.display = "inline-block";
-        statusText.innerText = "Sedang membaca dan menyalin format...";
-        
-        try {
-            // 1. Buat Workbook Baru (Master)
-            const wbMaster = new ExcelJS.Workbook();
-            wbMaster.creator = 'Vidatra App';
-            wbMaster.created = new Date();
+            try {
+                const wbMaster = new ExcelJS.Workbook();
+                wbMaster.creator = 'Vidatra App';
+                wbMaster.created = new Date();
 
-            // 2. Loop semua file yang diupload
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                statusText.innerText = `Memproses: ${file.name}...`;
-                
-                // Baca file ke ArrayBuffer
-                const arrayBuffer = await file.arrayBuffer();
-                const wbSource = new ExcelJS.Workbook();
-                await wbSource.xlsx.load(arrayBuffer);
-                
-                // Ambil sheet pertama
-                const sourceSheet = wbSource.worksheets[0];
-                
-                if(sourceSheet) {
-                    // --- LOGIKA RENAME SHEET ---
-                    let cleanName = file.name.replace(/\.[^/.]+$/, ""); // Hapus .xlsx
-                    cleanName = cleanName.replace(/Pendapatan\s?-\s?/gi, "").trim(); // Hapus "Pendapatan -"
-                    let sheetName = cleanName.substring(0, 31); // Max 31 char
-                    
-                    // Handle nama kembar
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    statusText.innerText = `Memproses: ${file.name}...`;
+
+                    const arrayBuffer = await file.arrayBuffer();
+                    const wbSource = new ExcelJS.Workbook();
+                    await wbSource.xlsx.load(arrayBuffer);
+
+                    const sourceSheet = wbSource.worksheets[0];
+                    if (!sourceSheet) continue;
+
+                    // Bersihkan nama sheet
+                    let cleanName = file.name.replace(/\.[^/.]+$/, "");
+                    cleanName = cleanName.replace(/Pendapatan\s?-\s?/gi, "").trim();
+                    let sheetName = cleanName.substring(0, 31);
                     let counter = 1;
                     let originalName = sheetName;
                     while (wbMaster.getWorksheet(sheetName)) {
@@ -108,73 +185,81 @@
                         counter++;
                     }
 
-                    // --- COPY PASTE DENGAN FORMATTING ---
-                    // ExcelJS tidak punya fitur "Copy Sheet to other Workbook" secara langsung
-                    // Kita harus menyalin Row, Cell, Style, dan Merge secara manual.
-                    
                     const targetSheet = wbMaster.addWorksheet(sheetName);
 
-                    // 1. Copy Pengaturan Kolom (Lebar)
+                    // 1. Copy kolom (lebar & style default)
                     if (sourceSheet.columns) {
                         targetSheet.columns = sourceSheet.columns.map(col => ({
                             header: col.header,
                             key: col.key,
                             width: col.width,
-                            style: col.style // Copy default style per kolom
+                            style: col.style
                         }));
                     }
 
-                    // 2. Copy Setiap Baris dan Cell (Termasuk Style/Warna)
-                    sourceSheet.eachRow({ includeEmpty: true }, function(row, rowNumber) {
+                    // 2. Copy setiap baris & sel (termasuk style)
+                    sourceSheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
                         const targetRow = targetSheet.getRow(rowNumber);
-                        
-                        // Copy tinggi baris
-                        if(row.height) targetRow.height = row.height;
+                        if (row.height) targetRow.height = row.height;
 
-                        row.eachCell({ includeEmpty: true }, function(cell, colNumber) {
+                        row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
                             const targetCell = targetRow.getCell(colNumber);
-                            
                             targetCell.value = cell.value;
-                            
-                            // *** INI KUNCINYA: Copy Style Object ***
-                            // Meliputi: font, fill, border, alignment, numFmt
-                            targetCell.style = JSON.parse(JSON.stringify(cell.style)); 
+                            if (cell.style) {
+                                targetCell.style = JSON.parse(JSON.stringify(cell.style));
+                            }
                         });
                         targetRow.commit();
                     });
 
-                    // 3. Copy Merged Cells (Sel yang digabung)
-                    // sourceSheet.model.merges berisi array range, misal ['A1:B2', 'C1:C5']
-                    const merges = sourceSheet.model.merges; 
-                    if(merges) {
+                    // 3. Copy merged cells
+                    const merges = sourceSheet.model.merges;
+                    if (merges) {
                         merges.forEach(range => {
                             targetSheet.mergeCells(range);
                         });
                     }
+
+                    // 4. Copy Data Validations (termasuk dropdown)
+                    if (sourceSheet.dataValidations && sourceSheet.dataValidations.length > 0) {
+                        sourceSheet.dataValidations.forEach(dv => {
+                            targetSheet.addConditionalDataValidation({
+                                type: dv.type,
+                                operator: dv.operator,
+                                allowBlank: dv.allowBlank,
+                                showInputMessage: dv.showInputMessage,
+                                showErrorMessage: dv.showErrorMessage,
+                                promptTitle: dv.promptTitle,
+                                prompt: dv.prompt,
+                                errorTitle: dv.errorTitle,
+                                error: dv.error,
+                                sqref: dv.sqref,
+                                formulae: dv.formulae
+                            });
+                        });
+                    }
                 }
+
+                // Simpan hasil
+                statusText.innerText = "Menyusun file akhir...";
+                const buffer = await wbMaster.xlsx.writeBuffer();
+                const blob = new Blob([buffer], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                });
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/[-T:]/g, "");
+                saveAs(blob, `Rekap_Formatted_${timestamp}.xlsx`);
+
+                statusText.innerText = "Selesai! File berhasil didownload.";
+                statusText.style.color = "green";
+            } catch (error) {
+                console.error(error);
+                statusText.innerText = "Error: " + (error.message || 'Terjadi kesalahan tak dikenal.');
+                statusText.style.color = "red";
+            } finally {
+                loadingIcon.style.display = "none";
+                btnProcess.disabled = false;
             }
-
-            // 3. Download Hasil
-            statusText.innerText = "Menyusun file akhir...";
-            const buffer = await wbMaster.xlsx.writeBuffer();
-            const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            
-            const timestamp = new Date().toISOString().slice(0,19).replace(/[-T:]/g,"");
-            saveAs(blob, `Rekap_Formatted_${timestamp}.xlsx`);
-
-            statusText.innerText = "Selesai! File berhasil didownload.";
-            statusText.style.color = "green";
-
-        } catch (error) {
-            console.error(error);
-            statusText.innerText = "Error: " + error.message;
-            statusText.style.color = "red";
-        } finally {
-            loadingIcon.style.display = "none";
-            btnProcess.disabled = false;
         }
-    }
-</script>
-
+    </script>
 </body>
 </html>
